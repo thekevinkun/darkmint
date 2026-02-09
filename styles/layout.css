@@ -1,0 +1,212 @@
+/*
+  LAYOUT STYLES - Page structure
+  Header, Footer, Containers
+*/
+
+/* CONTAINER - Main content wrapper */
+.container {
+  max-width: 1200px; /* Max width for readability */
+  margin: 0 auto; /* Center horizontally */
+  padding: 0 var(--space-lg); /* Side padding */
+  width: 100%; /* Full width up to max */
+}
+
+/* Smaller container for focused content */
+.container--narrow {
+  max-width: 800px; /* Narrower for forms/articles */
+}
+
+/* HEADER - Top navigation */
+.header {
+  position: sticky; /* Stick to top when scrolling */
+  top: 0; /* Stick at very top */
+  z-index: var(--z-dropdown); /* Above main content */
+  background: rgba(10, 14, 26, 0.8); /* Semi-transparent dark bg */
+  backdrop-filter: blur(10px); /* Blur background behind header */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle bottom border */
+  padding: var(--space-md) 0; /* Vertical padding */
+}
+
+.header__container {
+  display: flex; /* Flexbox for layout */
+  justify-content: space-between; /* Space between logo and nav */
+  align-items: center; /* Vertical center alignment */
+  max-width: 1200px; /* Match container width */
+  margin: 0 auto; /* Center horizontally */
+  padding: 0 var(--space-lg); /* Side padding */
+}
+
+.header__logo {
+  font-size: 1.5rem; /* Large logo text */
+  font-weight: 700; /* Bold */
+  background: var(--gradient-cyber); /* Gradient text */
+  -webkit-background-clip: text; /* Clip to text */
+  -webkit-text-fill-color: transparent; /* Transparent to show gradient */
+  background-clip: text;
+  letter-spacing: -0.02em; /* Tight letter spacing */
+}
+
+.header__nav {
+  display: flex; /* Flexbox for nav items */
+  gap: var(--space-lg); /* Space between nav items */
+  align-items: center; /* Vertical center */
+}
+
+.header__nav-link {
+  color: var(--text-secondary); /* Muted text color */
+  font-weight: 500; /* Medium weight */
+  transition: var(--transition-fast); /* Smooth hover */
+  padding: var(--space-sm) var(--space-md); /* Clickable area */
+  border-radius: var(--radius-md); /* Rounded corners */
+}
+
+.header__nav-link:hover {
+  color: var(--text-primary); /* Brighten on hover */
+  background: rgba(255, 255, 255, 0.05); /* Subtle background */
+  text-decoration: none; /* Remove underline */
+}
+
+.header__nav-link--active {
+  color: #ff00ff; /* Magenta for active link */
+  background: rgba(255, 0, 255, 0.1); /* Magenta tint background */
+}
+
+/* MAIN - Primary content area */
+.main {
+  min-height: calc(
+    100vh - 200px
+  ); /* At least viewport height minus header/footer */
+  padding: var(--space-3xl) 0; /* Generous vertical padding */
+}
+
+/* FOOTER - Bottom area */
+.footer {
+  background: var(--bg-secondary); /* Darker background */
+  border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle top border */
+  padding: var(--space-2xl) 0; /* Vertical padding */
+  margin-top: var(--space-3xl); /* Space from main content */
+}
+
+.footer__container {
+  max-width: 1200px; /* Match container width */
+  margin: 0 auto; /* Center horizontally */
+  padding: 0 var(--space-lg); /* Side padding */
+  text-align: center; /* Center text */
+}
+
+.footer__text {
+  color: var(--text-tertiary); /* Muted footer text */
+  font-size: 0.875rem; /* Smaller text */
+  margin-bottom: var(--space-sm); /* Space below */
+}
+
+.footer__links {
+  display: flex; /* Flexbox layout */
+  justify-content: center; /* Center links */
+  gap: var(--space-lg); /* Space between links */
+  margin-top: var(--space-md); /* Space above */
+}
+
+.footer__link {
+  color: var(--text-tertiary); /* Muted link color */
+  font-size: 0.875rem; /* Smaller text */
+  transition: var(--transition-fast); /* Smooth hover */
+}
+
+.footer__link:hover {
+  color: #ff00ff; /* Magenta on hover */
+}
+
+/* SECTION - Content sections */
+.section {
+  padding: var(--space-3xl) 0; /* Vertical section padding */
+}
+
+.section__title {
+  text-align: center; /* Center section titles */
+  margin-bottom: var(--space-2xl); /* Space below title */
+}
+
+.section__subtitle {
+  text-align: center; /* Center subtitles */
+  color: var(--text-secondary); /* Muted color */
+  font-size: 1.125rem; /* Slightly larger than body */
+  margin-bottom: var(--space-xl); /* Space below */
+  max-width: 600px; /* Limit width for readability */
+  margin-left: auto; /* Center horizontally */
+  margin-right: auto; /* Center horizontally */
+}
+
+/* GRID - Layout grid system */
+.grid {
+  display: grid; /* CSS Grid layout */
+  gap: var(--space-lg); /* Space between grid items */
+}
+
+.grid--2-cols {
+  grid-template-columns: repeat(2, 1fr); /* 2 equal columns */
+}
+
+.grid--3-cols {
+  grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+}
+
+.grid--4-cols {
+  grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+}
+
+/* RESPONSIVE - Mobile adaptations */
+
+/* Tablet and below (768px) */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 var(--space-md); /* Less padding on mobile */
+  }
+
+  .header__container {
+    padding: 0 var(--space-md); /* Less padding on mobile */
+  }
+
+  .header__nav {
+    gap: var(--space-md); /* Tighter nav spacing */
+  }
+
+  .main {
+    padding: var(--space-2xl) 0; /* Less vertical padding */
+  }
+
+  .section {
+    padding: var(--space-2xl) 0; /* Less section padding */
+  }
+
+  .grid--2-cols,
+  .grid--3-cols,
+  .grid--4-cols {
+    grid-template-columns: 1fr; /* Single column on mobile */
+  }
+
+  h1 {
+    font-size: 2rem; /* Smaller heading on mobile */
+  }
+
+  h2 {
+    font-size: 1.5rem; /* Smaller h2 on mobile */
+  }
+}
+
+/* Mobile only (480px) */
+@media (max-width: 480px) {
+  .header__logo {
+    font-size: 1.25rem; /* Smaller logo on small screens */
+  }
+
+  .header__nav {
+    flex-direction: column; /* Stack nav vertically if needed */
+    gap: var(--space-sm); /* Tighter spacing */
+  }
+
+  .footer__links {
+    flex-direction: column; /* Stack footer links vertically */
+    gap: var(--space-sm); /* Tighter spacing */
+  }
+}

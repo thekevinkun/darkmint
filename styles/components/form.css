@@ -1,0 +1,235 @@
+/* FORM GROUP - Wrapper for form fields */
+.form-group {
+  margin-bottom: var(--space-lg); /* Space between form fields */
+}
+
+.form-group--last {
+  margin-bottom: 0; /* No margin on last field */
+}
+
+/* LABEL - Form field labels */
+.form-label {
+  display: block; /* Block element */
+  color: var(--text-primary); /* Bright white text */
+  font-weight: 600; /* Semi-bold */
+  font-size: 0.875rem; /* Slightly smaller */
+  margin-bottom: var(--space-sm); /* Space below label */
+  letter-spacing: 0.02em; /* Slight letter spacing */
+}
+
+.form-label--required::after {
+  content: " *"; /* Add asterisk for required fields */
+  color: #ef4444; /* Red asterisk */
+}
+
+/* INPUT - Text inputs and base input styles */
+.form-input {
+  width: 100%; /* Full width */
+  padding: 12px 16px; /* Comfortable input padding */
+  background: var(--bg-tertiary); /* Dark background */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+  border-radius: var(--radius-md); /* Rounded corners */
+  color: var(--text-primary); /* White text */
+  font-size: 1rem; /* Standard text size */
+  font-family: inherit; /* Use body font */
+  transition: all var(--transition-base); /* Smooth focus effect */
+  outline: none; /* Remove default outline */
+}
+
+.form-input::placeholder {
+  color: var(--text-tertiary); /* Muted placeholder text */
+}
+
+.form-input:focus {
+  border-color: #ff00ff; /* Magenta border on focus */
+  box-shadow: 0 0 0 3px rgba(255, 0, 255, 0.1); /* Magenta glow ring */
+  background: var(--bg-secondary); /* Slightly darker on focus */
+}
+
+.form-input:disabled {
+  opacity: 0.5; /* Faded when disabled */
+  cursor: not-allowed; /* Show not clickable */
+}
+
+/* TEXTAREA - Multi-line input */
+.form-textarea {
+  width: 100%; /* Full width */
+  padding: 12px 16px; /* Same as input */
+  background: var(--bg-tertiary); /* Dark background */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+  border-radius: var(--radius-md); /* Rounded corners */
+  color: var(--text-primary); /* White text */
+  font-size: 1rem; /* Standard text size */
+  font-family: inherit; /* Use body font */
+  transition: all var(--transition-base); /* Smooth focus */
+  outline: none; /* Remove default outline */
+  resize: vertical; /* Allow vertical resize only */
+  min-height: 120px; /* Minimum height */
+}
+
+.form-textarea::placeholder {
+  color: var(--text-tertiary); /* Muted placeholder */
+}
+
+.form-textarea:focus {
+  border-color: #ff00ff; /* Magenta border on focus */
+  box-shadow: 0 0 0 3px rgba(255, 0, 255, 0.1); /* Magenta glow ring */
+  background: var(--bg-secondary); /* Slightly darker */
+}
+
+/* SELECT - Dropdown select */
+.form-select {
+  width: 100%; /* Full width */
+  padding: 12px 16px; /* Same as input */
+  background: var(--bg-tertiary); /* Dark background */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+  border-radius: var(--radius-md); /* Rounded corners */
+  color: var(--text-primary); /* White text */
+  font-size: 1rem; /* Standard text size */
+  font-family: inherit; /* Use body font */
+  transition: all var(--transition-base); /* Smooth focus */
+  outline: none; /* Remove default outline */
+  cursor: pointer; /* Show it's clickable */
+  appearance: none; /* Remove default arrow */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23b0b8cc' d='M6 9L1 4h10z'/%3E%3C/svg%3E"); /* Custom arrow */
+  background-repeat: no-repeat; /* Don't repeat arrow */
+  background-position: right 12px center; /* Position arrow on right */
+  padding-right: 40px; /* Space for arrow */
+}
+
+.form-select:focus {
+  border-color: #ff00ff; /* Magenta border on focus */
+  box-shadow: 0 0 0 3px rgba(255, 0, 255, 0.1); /* Magenta glow ring */
+  background-color: var(--bg-secondary); /* Slightly darker */
+}
+
+/* Option styling (limited browser support) */
+.form-select option {
+  background: var(--bg-tertiary); /* Dark option background */
+  color: var(--text-primary); /* White text */
+}
+
+/* CHECKBOX & RADIO - Custom styled */
+.form-checkbox,
+.form-radio {
+  appearance: none; /* Remove default styling */
+  width: 20px; /* Size */
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+  background: var(--bg-tertiary); /* Dark background */
+  cursor: pointer; /* Show clickable */
+  position: relative; /* For checkmark */
+  transition: all var(--transition-fast); /* Smooth transition */
+}
+
+.form-checkbox {
+  border-radius: var(--radius-sm); /* Slightly rounded for checkbox */
+}
+
+.form-radio {
+  border-radius: 50%; /* Circle for radio */
+}
+
+.form-checkbox:checked,
+.form-radio:checked {
+  background: var(--gradient-cyber); /* Purple-magenta gradient when checked */
+  border-color: #ff00ff; /* Magenta border */
+}
+
+.form-checkbox:checked::after {
+  content: "✓"; /* Checkmark */
+  position: absolute; /* Center in box */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center perfectly */
+  color: white; /* White checkmark */
+  font-size: 14px; /* Checkmark size */
+  font-weight: bold; /* Bold checkmark */
+}
+
+.form-radio:checked::after {
+  content: ""; /* Empty pseudo-element */
+  position: absolute; /* Center in circle */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center perfectly */
+  width: 8px; /* Dot size */
+  height: 8px;
+  background: white; /* White dot */
+  border-radius: 50%; /* Circle dot */
+}
+
+/* CHECKBOX/RADIO WRAPPER - Label + input */
+.form-check {
+  display: flex; /* Flex layout */
+  align-items: center; /* Vertical center */
+  gap: var(--space-sm); /* Space between input and label */
+  cursor: pointer; /* Show clickable */
+}
+
+.form-check__label {
+  color: var(--text-secondary); /* Muted label text */
+  font-size: 0.9375rem; /* Slightly smaller */
+  cursor: pointer; /* Show clickable */
+}
+
+/* FORM HELPER TEXT - Hints and errors */
+.form-helper {
+  font-size: 0.875rem; /* Small text */
+  margin-top: var(--space-xs); /* Space above */
+  color: var(--text-tertiary); /* Muted color */
+}
+
+.form-error {
+  font-size: 0.875rem; /* Small text */
+  margin-top: var(--space-xs); /* Space above */
+  color: #ef4444; /* Red error text */
+  display: flex; /* Flex for icon */
+  align-items: center; /* Vertical center */
+  gap: var(--space-xs); /* Space between icon and text */
+}
+
+.form-error::before {
+  content: "⚠"; /* Warning icon */
+  font-size: 1rem; /* Icon size */
+}
+
+/* Input error state */
+.form-input--error,
+.form-textarea--error,
+.form-select--error {
+  border-color: #ef4444; /* Red border */
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1); /* Red glow */
+}
+
+/* FORM ACTIONS - Button container */
+.form-actions {
+  display: flex; /* Flex layout */
+  gap: var(--space-md); /* Space between buttons */
+  margin-top: var(--space-xl); /* Space above */
+}
+
+.form-actions--center {
+  justify-content: center; /* Center buttons */
+}
+
+.form-actions--right {
+  justify-content: flex-end; /* Right-align buttons */
+}
+
+/* RESPONSIVE - Mobile adjustments */
+@media (max-width: 768px) {
+  .form-input,
+  .form-textarea,
+  .form-select {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+
+  .form-actions {
+    flex-direction: column; /* Stack buttons vertically */
+  }
+
+  .form-actions button {
+    width: 100%; /* Full width buttons */
+  }
+}

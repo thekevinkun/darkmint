@@ -1,0 +1,443 @@
+/* TEXT UTILITIES */
+.text-center {
+  text-align: center; /* Center text */
+}
+
+.text-left {
+  text-align: left; /* Left align text */
+}
+
+.text-right {
+  text-align: right; /* Right align text */
+}
+
+.text-primary {
+  color: var(--text-primary); /* White text */
+}
+
+.text-secondary {
+  color: var(--text-secondary); /* Muted text */
+}
+
+.text-tertiary {
+  color: var(--text-tertiary); /* Very muted text */
+}
+
+.text-gradient {
+  background: var(--gradient-cyber); /* Gradient text */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-small {
+  font-size: 0.875rem; /* Small text */
+}
+
+.text-large {
+  font-size: 1.125rem; /* Large text */
+}
+
+.text-bold {
+  font-weight: 700; /* Bold text */
+}
+
+.text-uppercase {
+  text-transform: uppercase; /* Uppercase text */
+  letter-spacing: 0.05em; /* Slight letter spacing */
+}
+
+/* SPACING UTILITIES */
+.mt-xs {
+  margin-top: var(--space-xs);
+}
+.mt-sm {
+  margin-top: var(--space-sm);
+}
+.mt-md {
+  margin-top: var(--space-md);
+}
+.mt-lg {
+  margin-top: var(--space-lg);
+}
+.mt-xl {
+  margin-top: var(--space-xl);
+}
+
+.mb-xs {
+  margin-bottom: var(--space-xs);
+}
+.mb-sm {
+  margin-bottom: var(--space-sm);
+}
+.mb-md {
+  margin-bottom: var(--space-md);
+}
+.mb-lg {
+  margin-bottom: var(--space-lg);
+}
+.mb-xl {
+  margin-bottom: var(--space-xl);
+}
+
+.ml-xs {
+  margin-left: var(--space-xs);
+}
+.ml-sm {
+  margin-left: var(--space-sm);
+}
+.ml-md {
+  margin-left: var(--space-md);
+}
+.ml-lg {
+  margin-left: var(--space-lg);
+}
+.ml-xl {
+  margin-left: var(--space-xl);
+}
+
+.mr-xs {
+  margin-right: var(--space-xs);
+}
+.mr-sm {
+  margin-right: var(--space-sm);
+}
+.mr-md {
+  margin-right: var(--space-md);
+}
+.mr-lg {
+  margin-right: var(--space-lg);
+}
+.mr-xl {
+  margin-right: var(--space-xl);
+}
+
+.pt-xs {
+  padding-top: var(--space-xs);
+}
+.pt-sm {
+  padding-top: var(--space-sm);
+}
+.pt-md {
+  padding-top: var(--space-md);
+}
+.pt-lg {
+  padding-top: var(--space-lg);
+}
+.pt-xl {
+  padding-top: var(--space-xl);
+}
+
+.pb-xs {
+  padding-bottom: var(--space-xs);
+}
+.pb-sm {
+  padding-bottom: var(--space-sm);
+}
+.pb-md {
+  padding-bottom: var(--space-md);
+}
+.pb-lg {
+  padding-bottom: var(--space-lg);
+}
+.pb-xl {
+  padding-bottom: var(--space-xl);
+}
+
+/* DISPLAY UTILITIES */
+.flex {
+  display: flex; /* Flexbox layout */
+}
+
+.flex-col {
+  display: flex; /* Flexbox */
+  flex-direction: column; /* Column direction */
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between; /* Space between items */
+  align-items: center; /* Center vertically */
+}
+
+.flex-wrap {
+  flex-wrap: wrap; /* Allow wrapping */
+}
+
+.gap-xs {
+  gap: var(--space-xs);
+}
+.gap-sm {
+  gap: var(--space-sm);
+}
+.gap-md {
+  gap: var(--space-md);
+}
+.gap-lg {
+  gap: var(--space-lg);
+}
+.gap-xl {
+  gap: var(--space-xl);
+}
+
+.hidden {
+  display: none; /* Hide element */
+}
+
+.block {
+  display: block; /* Block element */
+}
+
+.inline-block {
+  display: inline-block; /* Inline-block element */
+}
+
+/* WIDTH UTILITIES */
+.w-full {
+  width: 100%; /* Full width */
+}
+
+.w-auto {
+  width: auto; /* Auto width */
+}
+
+.max-w-sm {
+  max-width: 400px; /* Small max width */
+}
+
+.max-w-md {
+  max-width: 600px; /* Medium max width */
+}
+
+.max-w-lg {
+  max-width: 800px; /* Large max width */
+}
+
+.max-w-xl {
+  max-width: 1000px; /* Extra large max width */
+}
+
+/* BACKGROUND UTILITIES */
+.bg-primary {
+  background: var(--bg-primary); /* Primary dark background */
+}
+
+.bg-secondary {
+  background: var(--bg-secondary); /* Secondary background */
+}
+
+.bg-tertiary {
+  background: var(--bg-tertiary); /* Tertiary background */
+}
+
+.bg-gradient-cyber {
+  background: var(--gradient-cyber); /* Cyan gradient */
+}
+
+.bg-gradient-neon {
+  background: var(--gradient-neon); /* Green gradient */
+}
+
+.bg-gradient-dark {
+  background: var(--gradient-dark); /* Dark gradient */
+}
+
+/* BORDER UTILITIES */
+.border {
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+}
+
+.border-cyan {
+  border-color: #00f5ff; /* Cyan border */
+}
+
+.border-none {
+  border: none; /* No border */
+}
+
+.rounded-sm {
+  border-radius: var(--radius-sm); /* Small rounding */
+}
+
+.rounded-md {
+  border-radius: var(--radius-md); /* Medium rounding */
+}
+
+.rounded-lg {
+  border-radius: var(--radius-lg); /* Large rounding */
+}
+
+.rounded-full {
+  border-radius: 9999px; /* Full circle/pill */
+}
+
+/* SHADOW UTILITIES */
+.shadow-sm {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Small shadow */
+}
+
+.shadow-md {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4); /* Medium shadow */
+}
+
+.shadow-lg {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); /* Large shadow */
+}
+
+.shadow-glow-blue {
+  box-shadow: var(--glow-blue); /* Blue glow */
+}
+
+.shadow-glow-cyan {
+  box-shadow: var(--glow-cyan); /* Cyan glow */
+}
+
+.shadow-glow-green {
+  box-shadow: var(--glow-green); /* Green glow */
+}
+
+/* POSITION UTILITIES */
+.relative {
+  position: relative; /* Relative positioning */
+}
+
+.absolute {
+  position: absolute; /* Absolute positioning */
+}
+
+.fixed {
+  position: fixed; /* Fixed positioning */
+}
+
+.sticky {
+  position: sticky; /* Sticky positioning */
+}
+
+/* OVERFLOW UTILITIES */
+.overflow-hidden {
+  overflow: hidden; /* Hide overflow */
+}
+
+.overflow-auto {
+  overflow: auto; /* Auto scrollbars */
+}
+
+.overflow-scroll {
+  overflow: scroll; /* Always show scrollbars */
+}
+
+/* CURSOR UTILITIES */
+.cursor-pointer {
+  cursor: pointer; /* Pointer cursor */
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed; /* Not allowed cursor */
+}
+
+/* ANIMATION UTILITIES */
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1; /* Full opacity */
+  }
+  50% {
+    opacity: 0.5; /* Half opacity */
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite; /* Spinning animation */
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg); /* Start at 0 degrees */
+  }
+  to {
+    transform: rotate(360deg); /* End at 360 degrees */
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in; /* Fade in animation */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0; /* Start transparent */
+  }
+  to {
+    opacity: 1; /* End opaque */
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out; /* Slide up animation */
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px); /* Start below */
+    opacity: 0; /* Start transparent */
+  }
+  to {
+    transform: translateY(0); /* End at normal position */
+    opacity: 1; /* End opaque */
+  }
+}
+
+/* ACCESSIBILITY UTILITIES */
+.sr-only {
+  position: absolute; /* Take out of flow */
+  width: 1px; /* Tiny dimensions */
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden; /* Hide visually */
+  clip: rect(0, 0, 0, 0); /* Clip to nothing */
+  white-space: nowrap; /* No wrapping */
+  border: 0; /* No border */
+}
+
+/* Screen reader only - visible on focus */
+.sr-only-focusable:focus {
+  position: static; /* Return to flow */
+  width: auto; /* Auto dimensions */
+  height: auto;
+  margin: 0;
+  overflow: visible; /* Show */
+  clip: auto;
+  white-space: normal; /* Normal wrapping */
+}
+
+/* RESPONSIVE UTILITIES */
+@media (max-width: 768px) {
+  .mobile-hidden {
+    display: none; /* Hide on mobile */
+  }
+
+  .mobile-visible {
+    display: block; /* Show on mobile */
+  }
+}
+
+@media (min-width: 769px) {
+  .desktop-hidden {
+    display: none; /* Hide on desktop */
+  }
+
+  .desktop-visible {
+    display: block; /* Show on desktop */
+  }
+}

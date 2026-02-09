@@ -1,42 +1,171 @@
+/* Import all styles */
+@import "../styles/index.css";
+
+/* 
+  DARKMINT - Global Styles & CSS Variables
+*/
+
+/* CSS VARIABLES - Design Tokens */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Dark base colors - Foundation of our dark theme */
+  --bg-primary: #0a0e1a; /* Deep dark blue-black background */
+  --bg-secondary: #151b2e; /* Slightly lighter for contrast */
+  --bg-tertiary: #1e2740; /* Card and component backgrounds */
+
+  /* Text colors - Hierarchy for readability */
+  --text-primary: #ffffff; /* Main headings and important text */
+  --text-secondary: #b0b8cc; /* Body text and descriptions */
+  --text-tertiary: #6b7280; /* Muted text and labels */
+
+  /* Accent gradients - AI/VR Purple-Pink vibes */
+  --gradient-cyber: linear-gradient(
+    135deg,
+    #a855f7 0%,
+    #ff00ff 100%
+  ); /* Purple to magenta */
+  --gradient-neon: linear-gradient(
+    135deg,
+    #e91e63 0%,
+    #ff00ff 100%
+  ); /* Pink to magenta */
+  --gradient-dark: linear-gradient(
+    135deg,
+    #1e2740 0%,
+    #2a3350 100%
+  ); /* Subtle dark gradient */
+  --gradient-purple: linear-gradient(
+    135deg,
+    #9333ea 0%,
+    #e91e63 100%
+  ); /* Purple to pink */
+
+  /* Glow effects - AI/VR aesthetic */
+  --glow-blue: 0 0 20px rgba(168, 85, 247, 0.5); /* Purple glow */
+  --glow-cyan: 0 0 20px rgba(255, 0, 255, 0.5); /* Magenta glow for highlights */
+  --glow-green: 0 0 20px rgba(233, 30, 99, 0.5); /* Pink glow for success */
+  --glow-purple: 0 0 20px rgba(168, 85, 247, 0.5); /* Purple glow for special elements */
+
+  /* Spacing scale - Consistent rhythm */
+  --space-xs: 4px; /* Tiny gaps */
+  --space-sm: 8px; /* Small spacing */
+  --space-md: 16px; /* Medium spacing (most common) */
+  --space-lg: 24px; /* Large spacing */
+  --space-xl: 32px; /* Extra large spacing */
+  --space-2xl: 48px; /* Section spacing */
+  --space-3xl: 64px; /* Major section spacing */
+
+  /* Border radius - Smooth modern feel */
+  --radius-sm: 4px; /* Subtle rounding */
+  --radius-md: 8px; /* Standard rounding */
+  --radius-lg: 12px; /* Card rounding */
+  --radius-xl: 16px; /* Large component rounding */
+
+  /* Transitions - Smooth animations */
+  --transition-fast: 150ms ease; /* Quick interactions */
+  --transition-base: 300ms ease; /* Standard hover effects */
+  --transition-slow: 500ms ease; /* Dramatic animations */
+
+  /* Z-index layers - Stack order */
+  --z-base: 1; /* Base content */
+  --z-dropdown: 100; /* Dropdowns */
+  --z-modal: 1000; /* Modals */
+  --z-tooltip: 2000; /* Tooltips on top */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
+/* CSS RESET - Remove browser defaults  */
 * {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+  margin: 0; /* Remove default margins */
+  padding: 0; /* Remove default padding */
+  box-sizing: border-box; /* Include padding/border in width calculations */
+}
+
+/* BASE STYLES - Foundation */
+html {
+  font-size: 16px; /* Base font size for rem units */
+  -webkit-font-smoothing: antialiased; /* Smooth fonts on Mac */
+  -moz-osx-font-smoothing: grayscale; /* Smooth fonts on Mac Firefox */
+}
+
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; /* System font stack for performance */
+  background: var(--bg-primary); /* Dark background */
+  color: var(--text-secondary); /* Default text color */
+  line-height: 1.6; /* Comfortable reading height */
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* TYPOGRAPHY - Text styles */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-primary); /* Headings are bright white */
+  font-weight: 700; /* Bold headings */
+  line-height: 1.2; /* Tight line height for headings */
+  margin-bottom: var(--space-md); /* Space below headings */
+}
+
+h1 {
+  font-size: 3rem; /* 48px - Main page titles */
+  background: var(--gradient-cyber); /* Gradient text */
+  -webkit-background-clip: text; /* Clip gradient to text */
+  -webkit-text-fill-color: transparent; /* Make text transparent to show gradient */
+  background-clip: text; /* Standard property */
+}
+
+h2 {
+  font-size: 2.25rem; /* 36px - Section titles */
+}
+
+h3 {
+  font-size: 1.75rem; /* 28px - Subsection titles */
+}
+
+p {
+  margin-bottom: var(--space-md); /* Space between paragraphs */
+  color: var(--text-secondary); /* Slightly muted body text */
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+  color: #ff00ff; /* Magenta links */
+  text-decoration: none; /* No underline by default */
+  transition: var(--transition-fast); /* Smooth color change */
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+a:hover {
+  color: #e91e63; /* Pink on hover */
+  text-decoration: underline; /* Underline on hover */
+}
+
+/* SCROLLBAR - Custom dark scrollbar */
+::-webkit-scrollbar {
+  width: 10px; /* Scrollbar width */
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary); /* Track color */
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary); /* Thumb color */
+  border-radius: var(--radius-md); /* Rounded thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2a3350; /* Lighter on hover */
+}
+
+/* SELECTION - Custom text selection color */
+::selection {
+  background: rgba(255, 0, 255, 0.3); /* Magenta selection background */
+  color: var(--text-primary); /* White selected text */
+}
+
+::-moz-selection {
+  background: rgba(255, 0, 255, 0.3); /* Firefox selection */
+  color: var(--text-primary);
 }

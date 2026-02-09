@@ -1,0 +1,211 @@
+/* BASE CARD - Default card style */
+.card {
+  background: var(--bg-tertiary); /* Dark card background */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+  border-radius: var(--radius-lg); /* Rounded corners */
+  padding: var(--space-xl); /* Comfortable padding */
+  transition: all var(--transition-base); /* Smooth hover effects */
+}
+
+.card:hover {
+  transform: translateY(-4px); /* Lift up on hover */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); /* Shadow on hover */
+}
+
+/* CARD HEADER - Title section */
+.card__header {
+  margin-bottom: var(--space-lg); /* Space below header */
+  padding-bottom: var(--space-md); /* Padding below */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Divider line */
+}
+
+.card__title {
+  font-size: 1.5rem; /* Large title */
+  font-weight: 700; /* Bold */
+  color: var(--text-primary); /* White text */
+  margin: 0; /* Remove default margin */
+}
+
+.card__subtitle {
+  font-size: 0.875rem; /* Smaller subtitle */
+  color: var(--text-tertiary); /* Muted text */
+  margin-top: var(--space-xs); /* Space above */
+}
+
+/* CARD BODY - Main content area */
+.card__body {
+  color: var(--text-secondary); /* Muted body text */
+  line-height: 1.6; /* Comfortable line height */
+}
+
+.card__body p:last-child {
+  margin-bottom: 0; /* Remove margin from last paragraph */
+}
+
+/* CARD FOOTER - Action area */
+.card__footer {
+  margin-top: var(--space-lg); /* Space above footer */
+  padding-top: var(--space-md); /* Padding above */
+  border-top: 1px solid rgba(255, 255, 255, 0.1); /* Divider line */
+  display: flex; /* Flex layout */
+  gap: var(--space-md); /* Space between items */
+  align-items: center; /* Vertical center */
+}
+
+/* CARD VARIANTS - Different styles */
+
+/* Glowing card with magenta border */
+.card--glowing {
+  border-color: #ff00ff; /* Magenta border */
+  box-shadow: var(--glow-cyan); /* Magenta glow effect */
+  background: linear-gradient(
+    135deg,
+    rgba(30, 39, 64, 0.9) 0%,
+    rgba(42, 51, 80, 0.9) 100%
+  ); /* Subtle gradient background */
+}
+
+.card--glowing:hover {
+  box-shadow: 0 0 40px rgba(255, 0, 255, 0.6); /* Stronger magenta glow on hover */
+}
+
+/* Dark gradient card */
+.card--dark {
+  background: var(--gradient-dark); /* Dark gradient background */
+  border-color: rgba(255, 255, 255, 0.05); /* Very subtle border */
+}
+
+/* Pink accent card */
+.card--neon {
+  border-color: #e91e63; /* Pink border */
+  box-shadow: var(--glow-green); /* Pink glow */
+}
+
+.card--neon:hover {
+  box-shadow: 0 0 40px rgba(233, 30, 99, 0.6); /* Stronger pink glow */
+}
+
+/* Purple accent card */
+.card--purple {
+  border-color: #a855f7; /* Purple border */
+  box-shadow: var(--glow-purple); /* Purple glow */
+}
+
+.card--purple:hover {
+  box-shadow: 0 0 40px rgba(168, 85, 247, 0.6); /* Stronger purple glow */
+}
+
+/* Transparent card (glass effect) */
+.card--glass {
+  background: rgba(30, 39, 64, 0.4); /* Semi-transparent background */
+  backdrop-filter: blur(10px); /* Blur background behind */
+  border-color: rgba(255, 255, 255, 0.15); /* Slightly visible border */
+}
+
+/* Flat card (no hover effects) */
+.card--flat {
+  transition: none; /* No transitions */
+}
+
+.card--flat:hover {
+  transform: none; /* No lift on hover */
+  box-shadow: none; /* No shadow */
+}
+
+/* CARD GRID - Grid of cards */
+.card-grid {
+  display: grid; /* CSS Grid */
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(300px, 1fr)
+  ); /* Responsive columns */
+  gap: var(--space-lg); /* Space between cards */
+}
+
+/* FEATURE CARD - Special highlighted cards */
+.feature-card {
+  background: var(--bg-tertiary); /* Dark background */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+  border-radius: var(--radius-lg); /* Rounded corners */
+  padding: var(--space-xl); /* Padding */
+  text-align: center; /* Center content */
+  transition: all var(--transition-base); /* Smooth hover */
+}
+
+.feature-card:hover {
+  transform: translateY(-8px); /* Bigger lift on hover */
+  border-color: #ff00ff; /* Magenta border */
+  box-shadow: var(--glow-cyan); /* Magenta glow */
+}
+
+.feature-card__icon {
+  width: 64px; /* Icon size */
+  height: 64px;
+  margin: 0 auto var(--space-lg); /* Center and space below */
+  background: var(--gradient-cyber); /* Gradient background */
+  border-radius: var(--radius-lg); /* Rounded corners */
+  display: flex; /* Flex to center content */
+  align-items: center; /* Vertical center */
+  justify-content: center; /* Horizontal center */
+  font-size: 2rem; /* Large icon/emoji */
+}
+
+.feature-card__title {
+  font-size: 1.25rem; /* Large title */
+  font-weight: 700; /* Bold */
+  color: var(--text-primary); /* White text */
+  margin-bottom: var(--space-sm); /* Space below */
+}
+
+.feature-card__description {
+  color: var(--text-secondary); /* Muted description */
+  font-size: 0.9375rem; /* Slightly smaller text */
+  line-height: 1.6; /* Comfortable line height */
+}
+
+/* STAT CARD - Display statistics/numbers */
+.stat-card {
+  background: var(--bg-tertiary); /* Dark background */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+  border-radius: var(--radius-lg); /* Rounded corners */
+  padding: var(--space-lg); /* Padding */
+  text-align: center; /* Center content */
+}
+
+.stat-card__value {
+  font-size: 2.5rem; /* Large number */
+  font-weight: 700; /* Bold */
+  background: var(--gradient-cyber); /* Gradient text */
+  -webkit-background-clip: text; /* Clip to text */
+  -webkit-text-fill-color: transparent; /* Transparent to show gradient */
+  background-clip: text;
+  margin-bottom: var(--space-sm); /* Space below */
+}
+
+.stat-card__label {
+  color: var(--text-tertiary); /* Muted label */
+  font-size: 0.875rem; /* Small text */
+  text-transform: uppercase; /* Uppercase label */
+  letter-spacing: 0.05em; /* Slight letter spacing */
+}
+
+/* RESPONSIVE - Mobile adjustments */
+@media (max-width: 768px) {
+  .card {
+    padding: var(--space-lg); /* Less padding on mobile */
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr; /* Single column on mobile */
+  }
+
+  .feature-card__icon {
+    width: 48px; /* Smaller icon on mobile */
+    height: 48px;
+    font-size: 1.5rem; /* Smaller icon size */
+  }
+
+  .stat-card__value {
+    font-size: 2rem; /* Smaller stat number */
+  }
+}

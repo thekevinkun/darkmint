@@ -1,0 +1,9 @@
+@import "./layout.css";
+@import "./animations.css";
+@import "./utilities.css";
+@import "./components/button.css";
+@import "./components/card.css";
+@import "./components/certificate-form.css";
+@import "./components/form.css";
+@import "./components/modal.css";
+@import "./pages/home.css";
