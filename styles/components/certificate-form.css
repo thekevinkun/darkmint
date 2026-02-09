@@ -155,20 +155,118 @@
 
 /* ERROR STATE - If generation fails */
 .certificate-form__error {
-  padding: var(--space-md); /* Padding */
+  margin-bottom: var(--space-lg); /* Space above */
+  padding: var(--space-md); /* Inner spacing */
   background: rgba(239, 68, 68, 0.1); /* Red tint background */
-  border: 1px solid rgba(239, 68, 68, 0.3); /* Red border */
+  border: 1px solid rgba(239, 68, 68, 0.5); /* Red border */
   border-radius: var(--radius-md); /* Rounded corners */
-  color: #ef4444; /* Red text */
-  margin-bottom: var(--space-lg); /* Space below */
-  display: flex; /* Flex layout */
-  align-items: center; /* Vertical center */
-  gap: var(--space-sm); /* Space between icon and text */
+  color: #f87171; /* Red text */
+  text-align: center; /* Center text */
+}
+
+.certificate-form__error p {
+  margin: 0; /* Remove default margin */
 }
 
 .certificate-form__error::before {
   content: "⚠"; /* Warning icon */
   font-size: 1.5rem; /* Large icon */
+}
+
+/* 
+  Mode Indicator
+  Shows whether using real AI or mock
+*/
+.mode-indicator {
+  text-align: center; /* Center text */
+  margin-bottom: var(--space-md); /* Space below */
+  padding: var(--space-sm); /* Inner padding */
+  background: rgba(168, 85, 247, 0.1); /* Purple tint */
+  border-radius: var(--radius-sm); /* Rounded corners */
+}
+
+.mode-indicator small {
+  color: #a855f7; /* Purple text */
+  font-size: 0.875rem; /* Smaller text */
+  font-weight: 500; /* Medium weight */
+}
+
+/* 
+  Certificate Result Styles
+  Displays AI-generated certificate
+*/
+.certificate-result {
+  padding: var(--space-xl); /* Inner spacing */
+  background: var(--bg-tertiary); /* Dark card background */
+  border: 2px solid #ff00ff; /* Magenta border */
+  border-radius: var(--radius-lg); /* Rounded corners */
+  box-shadow: var(--glow-purple); /* Purple glow */
+  animation: fadeIn 0.5s ease; /* Fade in animation */
+}
+
+.certificate-result__title {
+  font-size: 1.5rem; /* Large title */
+  color: #ff00ff; /* Magenta text */
+  margin-bottom: var(--space-lg); /* Space below */
+  text-align: center; /* Center text */
+}
+
+.certificate-result__image-container {
+  margin-bottom: var(--space-lg); /* Space below image */
+  border-radius: var(--radius-md); /* Rounded corners */
+  overflow: hidden; /* Hide overflow */
+  border: 1px solid rgba(255, 0, 255, 0.3); /* Subtle magenta border */
+  background: var(--bg-secondary); /* Dark background */
+}
+
+.certificate-result__image {
+  width: 100%; /* Full width */
+  height: auto; /* Maintain aspect ratio */
+  display: block; /* Remove inline spacing */
+}
+
+.certificate-result__text {
+  padding: var(--space-lg); /* Inner spacing */
+  background: var(--bg-secondary); /* Darker background */
+  border-radius: var(--radius-md); /* Rounded corners */
+  margin-bottom: var(--space-lg); /* Space below */
+}
+
+.certificate-result__text h4 {
+  color: #a855f7; /* Purple heading */
+  margin-bottom: var(--space-md); /* Space below */
+  font-size: 1.125rem; /* Slightly larger */
+}
+
+.certificate-text-content {
+  color: #e5e7eb; /* Light gray text */
+  line-height: 1.8; /* Comfortable reading */
+  white-space: pre-wrap; /* Preserve line breaks */
+  font-family: "Courier New", monospace; /* Monospace for certificate */
+  font-size: 0.875rem; /* Slightly smaller */
+  background: rgba(0, 0, 0, 0.3); /* Dark background */
+  padding: var(--space-md); /* Inner padding */
+  border-radius: var(--radius-sm); /* Rounded corners */
+  border-left: 3px solid #a855f7; /* Purple accent border */
+}
+
+.certificate-result__next-steps {
+  text-align: center; /* Center text */
+  color: #00ff88; /* Green accent */
+  font-weight: 500; /* Medium weight */
+  margin-top: var(--space-md); /* Space above */
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0; /* Start invisible */
+    transform: translateY(10px); /* Start slightly below */
+  }
+  to {
+    opacity: 1; /* End visible */
+    transform: translateY(0); /* End at normal position */
+  }
 }
 
 /* RESPONSIVE - Mobile adjustments */

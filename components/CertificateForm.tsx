@@ -1,43 +1,27 @@
 "use client";
 
+import { useActionState } from "react";
+import { generateCertificate } from "@/app/actions";
+import SubmitButton from "@/components/SubmitButton";
 import { useState } from "react";
 
 const CertificateForm = () => {
-  // Store form data in state (updates when user types)
-  const [formData, setFormData] = useState({
-    name: "", // User's name
-    certType: "Web3 Developer", // Certificate type (default value)
-    skills: "", // User's skills/achievements
+  // useActionState manages form submission and state
+  // It takes: (serverAction, initialState)
+  // It returns: [state, formAction, isPending]
+  const [state, formAction] = useActionState(generateCertificate, {
+    success: false, // Initial state: no success yet
   });
-
-  // Handle input changes (called when user types)
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
-  ) => {
-    const { name, value } = e.target; // Get field name and value
-
-    setFormData((prev) => ({
-      ...prev, // Keep other fields the same
-      [name]: value, // Update changed field
-    }));
-  };
-
-  // Handle form submission (placeholder for now)
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent page reload
-
-    console.log("Form submitted:", formData);
-
-    // TODO: Connect to AI generation
-  };
 
   return (
     <div className="certificate-form">
-      {/* Form card */}
-      <div className="card card--glowing">
-        <form onSubmit={handleSubmit}>
+      {/* 
+        Form card
+        action prop connects to our Server Action via useActionState
+        No onSubmit needed - React 19 handles it!
+      */}
+      <div style={{ height: "min-content" }} className="card card--glowing">
+        <form action={formAction}>
           {/* Name field */}
           <div className="form-group">
             <label htmlFor="name" className="form-label form-label--required">
@@ -47,11 +31,9 @@ const CertificateForm = () => {
               type="text"
               id="name"
               name="name"
-              value={formData.name}
-              onChange={handleChange}
               className="form-input"
               placeholder="Enter your full name"
-              required // HTML5 validation
+              required
             />
 
             <p className="form-helper">This will appear on your certificate</p>
@@ -68,8 +50,6 @@ const CertificateForm = () => {
             <select
               id="certType"
               name="certType"
-              value={formData.certType}
-              onChange={handleChange}
               className="form-select"
               required
             >
@@ -99,12 +79,10 @@ const CertificateForm = () => {
             <textarea
               id="skills"
               name="skills"
-              value={formData.skills}
-              onChange={handleChange}
               className="form-textarea"
               placeholder="Describe your skills, achievements, or what makes you special..."
               required
-              rows={5}
+              rows={4}
             />
 
             <p className="form-helper">
@@ -113,10 +91,9 @@ const CertificateForm = () => {
           </div>
 
           {/* Submit button */}
+
           <div className="form-actions form-actions--center">
-            <button type="submit" className="btn btn-primary btn--large">
-              🎨 Generate Certificate
-            </button>
+            <SubmitButton />
           </div>
 
           {/* Info card below form */}
@@ -130,9 +107,9 @@ const CertificateForm = () => {
                     color: "var(--text-tertiary)",
                   }}
                 >
-                  💡 <strong>Coming in:</strong> AI will generate your custom
+                  {/* 💡 <strong>Coming in:</strong> AI will generate your custom
                   certificate text and image.
-                  <br />
+                  <br /> */}
                   🔗 <strong>Coming:</strong> Your certificate will be minted as
                   an NFT on the blockchain.
                 </p>
@@ -141,28 +118,71 @@ const CertificateForm = () => {
           </div>
         </form>
       </div>
-
+        
       {/* Preview placeholder (will show AI results) */}
       <div className="certificate-form__preview">
-        <div className="card card--flat">
-          <div className="card__header">
-            <h3 className="card__title">Preview</h3>
-            <p className="card__subtitle">
-              Your generated certificate will appear here
-            </p>
+        {/* Display Error Message (if any)*/}
+        {state.error && (
+          <div className="certificate-form__error">
+            <p>❌ {state.error}</p>
           </div>
-          <div className="card__body">
-            <div className="certificate-form__preview-placeholder">
-              <div className="certificate-form__preview-icon">🖼️</div>
-              <p
-                style={{ color: "var(--text-tertiary)", fontSize: "0.875rem" }}
-              >
-                Fill out the form and click "Generate Certificate" to see your
-                AI-powered NFT certificate
+        )}
+
+        {state.success && state.certificateText && state.imageUrl ? (
+          <div className="certificate-result card card--glowing">
+            {/* Success header */}
+            <h3 className="certificate-result__title">
+              ✨ Your Certificate is Ready!
+            </h3>
+
+            {/* Generated Image */}
+            <div className="certificate-result__image-container">
+              <img
+                src={state.imageUrl}
+                alt="Generated certificate"
+                className="certificate-result__image"
+              />
+            </div>
+
+            {/* Generated Text */}
+            <div className="certificate-result__text">
+              <h4>Certificate Text:</h4>
+              <div className="certificate-text-content">
+                {state.certificateText}
+              </div>
+            </div>
+
+            {/* Show which mode is active */}
+              {state.mode && (
+                <div className="mode-indicator">
+                  <small>{state.mode}</small>
+                </div>
+              )}
+          </div>
+        ) : (
+          <div className="card card--flat">
+            <div className="card__header">
+              <h3 className="card__title">Preview</h3>
+              <p className="card__subtitle">
+                Your generated certificate will appear here
               </p>
             </div>
+            <div className="card__body">
+              <div className="certificate-form__preview-placeholder">
+                <div className="certificate-form__preview-icon">🖼️</div>
+                <p
+                  style={{
+                    color: "var(--text-tertiary)",
+                    fontSize: "0.875rem",
+                  }}
+                >
+                  Fill out the form and click "Generate Certificate" to see your
+                  AI-powered NFT certificate
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
