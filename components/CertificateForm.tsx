@@ -2,8 +2,7 @@
 
 import { useActionState } from "react";
 import { generateCertificate } from "@/app/actions";
-import Button from "@/components/Button";
-import SubmitButton from "@/components/SubmitButton";
+import { Button, SubmitButton } from "@/components";
 
 const CertificateForm = () => {
   // useActionState manages form submission and state
