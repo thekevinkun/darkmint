@@ -1,14 +1,20 @@
-/*
-   Certificate Form Styles
-   Component-specific styles for the form
-*/
+/* ============================================
+  Certificate Form Styles
+  Component-specific styles for the form
+============================================ */
 
 /* FORM CONTAINER - Main wrapper */
 .certificate-form {
   display: grid; /* Grid layout */
-  grid-template-columns: 1fr 1fr; /* Two equal columns */
-  gap: var(--space-2xl); /* Space between form and preview */
+  grid-template-columns: 350px 525px; /* Form: 450px, Preview: 520px */
+  gap: var(--space-2xl); /* Space between columns */
   margin-top: var(--space-xl); /* Space above */
+  justify-content: center; /* Center the grid on large screens */
+  width: 100%; /* Full width container */
+  max-width: 1200px; /* Maximum total width */
+  margin-left: auto; /* Center horizontally */
+  margin-right: auto; /* Center horizontally */
+  padding: 0 var(--space-lg); /* Side padding */
 }
 
 /* FORM INFO - Helper text card */
@@ -18,7 +24,7 @@
 
 /* PREVIEW SECTION - Shows generated certificate */
 .certificate-form__preview {
-  /* Inherits grid positioning */
+  /* Inherits styles from parent */
 }
 
 .certificate-form__preview-placeholder {
@@ -52,156 +58,38 @@
   }
 }
 
-/* GENERATED CERTIFICATE - After AI creates it */
-.certificate-form__result {
-  background: var(--bg-tertiary); /* Dark background */
-  border-radius: var(--radius-lg); /* Rounded corners */
-  padding: var(--space-xl); /* Padding */
-  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
-}
-
-.certificate-form__result-image {
-  width: 100%; /* Full width */
-  height: auto; /* Maintain aspect ratio */
-  border-radius: var(--radius-md); /* Rounded corners */
-  margin-bottom: var(--space-lg); /* Space below */
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); /* Shadow */
-}
-
-.certificate-form__result-text {
-  color: var(--text-secondary); /* Muted text */
-  line-height: 1.8; /* Comfortable line height */
-  margin-bottom: var(--space-lg); /* Space below */
-  padding: var(--space-lg); /* Padding */
-  background: rgba(0, 0, 0, 0.2); /* Subtle dark background */
-  border-radius: var(--radius-md); /* Rounded corners */
-  border-left: 3px solid #ff00ff; /* Magenta accent border */
-}
-
-.certificate-form__result-actions {
-  display: flex; /* Flex layout */
-  gap: var(--space-md); /* Space between buttons */
-  margin-top: var(--space-lg); /* Space above */
-}
-
-/* LOADING STATE - While AI generates */
-.certificate-form__loading {
-  display: flex; /* Flex layout */
-  flex-direction: column; /* Stack vertically */
-  align-items: center; /* Center horizontally */
-  justify-content: center; /* Center vertically */
-  min-height: 400px; /* Match placeholder height */
-  padding: var(--space-2xl); /* Padding */
-}
-
-.certificate-form__loading-spinner {
-  width: 60px; /* Spinner size */
-  height: 60px;
-  border: 4px solid rgba(255, 255, 255, 0.1); /* Light border */
-  border-top-color: #ff00ff; /* Magenta top for spin effect */
-  border-radius: 50%; /* Circle */
-  animation: spin 1s linear infinite; /* Spin animation */
-  margin-bottom: var(--space-lg); /* Space below */
-}
-
-.certificate-form__loading-text {
-  color: var(--text-secondary); /* Muted text */
-  font-size: 1.125rem; /* Slightly larger */
-  margin-bottom: var(--space-sm); /* Space below */
-}
-
-.certificate-form__loading-subtext {
-  color: var(--text-tertiary); /* Very muted */
-  font-size: 0.875rem; /* Smaller */
-  animation: pulse 2s ease-in-out infinite; /* Pulse animation */
-}
-
-/* Spin animation for loading spinner */
-@keyframes spin {
-  to {
-    transform: rotate(360deg); /* Full rotation */
-  }
-}
-
-/* Pulse animation for loading text */
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1; /* Full opacity */
-  }
-  50% {
-    opacity: 0.5; /* Half opacity */
-  }
-}
-
-/* SUCCESS STATE - After successful generation */
-.certificate-form__success {
-  padding: var(--space-md); /* Padding */
-  background: rgba(233, 30, 99, 0.1); /* Pink tint background */
-  border: 1px solid rgba(233, 30, 99, 0.3); /* Pink border */
-  border-radius: var(--radius-md); /* Rounded corners */
-  color: #e91e63; /* Pink text */
-  margin-bottom: var(--space-lg); /* Space below */
-  display: flex; /* Flex layout */
-  align-items: center; /* Vertical center */
-  gap: var(--space-sm); /* Space between icon and text */
-}
-
-.certificate-form__success::before {
-  content: "✓"; /* Checkmark */
-  font-size: 1.5rem; /* Large checkmark */
-  font-weight: bold; /* Bold */
-}
-
 /* ERROR STATE - If generation fails */
 .certificate-form__error {
-  margin-bottom: var(--space-lg); /* Space above */
+  margin-bottom: var(--space-lg); /* Space below */
   padding: var(--space-md); /* Inner spacing */
   background: rgba(239, 68, 68, 0.1); /* Red tint background */
   border: 1px solid rgba(239, 68, 68, 0.5); /* Red border */
   border-radius: var(--radius-md); /* Rounded corners */
   color: #f87171; /* Red text */
   text-align: center; /* Center text */
+  display: flex; /* Flex for icon */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  gap: var(--space-sm); /* Space between icon and text */
 }
 
 .certificate-form__error p {
   margin: 0; /* Remove default margin */
 }
 
-.certificate-form__error::before {
-  content: "⚠"; /* Warning icon */
-  font-size: 1.5rem; /* Large icon */
-}
-
-/* 
-  Mode Indicator
-  Shows whether using real AI or mock
-*/
-.mode-indicator {
-  text-align: center; /* Center text */
-  margin-bottom: var(--space-md); /* Space below */
-  padding: var(--space-sm); /* Inner padding */
-  background: rgba(168, 85, 247, 0.1); /* Purple tint */
-  border-radius: var(--radius-sm); /* Rounded corners */
-}
-
-.mode-indicator small {
-  color: #a855f7; /* Purple text */
-  font-size: 0.875rem; /* Smaller text */
-  font-weight: 500; /* Medium weight */
-}
-
-/* 
-  Certificate Result Styles
-  Displays AI-generated certificate
-*/
+/* ============================================
+   CERTIFICATE RESULT - After AI Generation
+============================================ */
 .certificate-result {
+  min-width: 0; /* Allow shrinking */
+  box-sizing: border-box;
   padding: var(--space-xl); /* Inner spacing */
   background: var(--bg-tertiary); /* Dark card background */
   border: 2px solid #ff00ff; /* Magenta border */
   border-radius: var(--radius-lg); /* Rounded corners */
   box-shadow: var(--glow-purple); /* Purple glow */
   animation: fadeIn 0.5s ease; /* Fade in animation */
+  overflow: hidden; /* Hide overflow */
 }
 
 .certificate-result__title {
@@ -209,55 +97,149 @@
   color: #ff00ff; /* Magenta text */
   margin-bottom: var(--space-lg); /* Space below */
   text-align: center; /* Center text */
+  overflow-wrap: break-word; /* Break long words */
+  word-wrap: break-word; /* Legacy support */
 }
 
+/* IMAGE CONTAINER */
 .certificate-result__image-container {
+  width: 100%; /* Full width of parent */
+  max-width: 100%;
   margin-bottom: var(--space-lg); /* Space below image */
   border-radius: var(--radius-md); /* Rounded corners */
   overflow: hidden; /* Hide overflow */
   border: 1px solid rgba(255, 0, 255, 0.3); /* Subtle magenta border */
   background: var(--bg-secondary); /* Dark background */
+  overflow: hidden;
 }
 
 .certificate-result__image {
   width: 100%; /* Full width */
   height: auto; /* Maintain aspect ratio */
+  max-width: 100%; /* Never exceed container */
   display: block; /* Remove inline spacing */
 }
 
-.certificate-result__text {
-  padding: var(--space-lg); /* Inner spacing */
-  background: var(--bg-secondary); /* Darker background */
-  border-radius: var(--radius-md); /* Rounded corners */
+/* ACTION BUTTONS - FIXED SELECTOR */
+.certificate-result__actions {
+  display: flex; /* Flexbox for buttons */
+  gap: var(--space-md); /* Space between buttons */
+  margin-top: var(--space-lg); /* Space above */
   margin-bottom: var(--space-lg); /* Space below */
+  flex-wrap: wrap; /* Wrap on mobile */
+}
+
+/* Target buttons directly, not through nested selector */
+.certificate-result__actions > * {
+  flex: 1; /* Equal width for all children */
+  min-width: 150px; /* Minimum button width */
+}
+
+/* COLLAPSIBLE TEXT SECTION - FIXED ANIMATION */
+.certificate-result__text-collapsible {
+  max-height: 0; /* Start collapsed */
+  overflow: hidden; /* Hide overflow */
+  transition: max-height 0.4s ease-out; /* Smooth expand - fixed timing */
+  opacity: 0; /* Start invisible */
+  transition:
+    max-height 0.4s ease-out,
+    opacity 0.3s ease-out; /* Smooth transitions */
+}
+
+.certificate-result__text-collapsible.expanded {
+  max-height: 500px; /* Reasonable expanded height - FIXED */
+  opacity: 1; /* Fade in when expanded */
+  margin-top: var(--space-lg); /* Space when expanded */
+}
+
+/* TEXT CONTENT STYLING */
+.certificate-result__text {
+  min-width: 0; /* Allow shrinking */
+  overflow-wrap: break-word; /* Break long words */
+  word-wrap: break-word; /* Legacy support */
+  word-break: break-word; /* Break anywhere if needed */
+  padding: var(--space-md); /* Inner padding */
+  background: rgba(0, 0, 0, 0.2); /* Subtle background */
+  border-radius: var(--radius-md); /* Rounded corners */
+  border-left: 2px solid rgba(168, 85, 247, 0.3); /* Subtle purple accent */
 }
 
 .certificate-result__text h4 {
-  color: #a855f7; /* Purple heading */
-  margin-bottom: var(--space-md); /* Space below */
-  font-size: 1.125rem; /* Slightly larger */
+  color: rgba(168, 85, 247, 0.7); /* Subtle purple */
+  margin-bottom: var(--space-sm); /* Space below */
+  font-size: 0.875rem; /* Smaller heading */
+  text-transform: uppercase; /* Uppercase style */
+  letter-spacing: 0.05em; /* Slight letter spacing */
+  margin-top: 0; /* Remove top margin */
 }
 
 .certificate-text-content {
-  color: #e5e7eb; /* Light gray text */
-  line-height: 1.8; /* Comfortable reading */
-  white-space: pre-wrap; /* Preserve line breaks */
-  font-family: "Courier New", monospace; /* Monospace for certificate */
-  font-size: 0.875rem; /* Slightly smaller */
-  background: rgba(0, 0, 0, 0.3); /* Dark background */
-  padding: var(--space-md); /* Inner padding */
-  border-radius: var(--radius-sm); /* Rounded corners */
-  border-left: 3px solid #a855f7; /* Purple accent border */
+  min-width: 0; /* Allow shrinking */
+  color: rgba(229, 231, 235, 0.6); /* Subtle light text */
+  line-height: 1.6; /* Comfortable reading */
+  font-size: 0.75rem; /* Small text */
+  max-height: 300px; /* Limit height */
+  padding-right: var(--space-sm); /* Space for scrollbar */
+  overflow-x: hidden; /* Hide horizontal scroll */
+  overflow-y: auto; /* Keep vertical scroll */
+  overflow-wrap: break-word; /* Break long words */
+  word-wrap: break-word; /* Legacy support */
+  word-break: break-word; /* Break anywhere if needed */
+  white-space: pre-wrap; /* Preserve breaks but wrap */
 }
 
+/* Custom scrollbar for text content */
+.certificate-text-content::-webkit-scrollbar {
+  width: 6px; /* Thin scrollbar */
+}
+
+.certificate-text-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2); /* Dark track */
+  border-radius: 3px; /* Rounded */
+}
+
+.certificate-text-content::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.5); /* Purple thumb */
+  border-radius: 3px; /* Rounded */
+}
+
+.certificate-text-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 85, 247, 0.7); /* Brighter on hover */
+}
+
+/* NEXT STEPS MESSAGE - WAS MISSING */
 .certificate-result__next-steps {
   text-align: center; /* Center text */
   color: #00ff88; /* Green accent */
   font-weight: 500; /* Medium weight */
-  margin-top: var(--space-md); /* Space above */
+  margin-top: var(--space-lg); /* Space above */
+  margin-bottom: var(--space-md); /* Space below */
+  font-size: 0.875rem; /* Slightly smaller */
+  padding: var(--space-sm); /* Small padding */
+  background: rgba(0, 255, 136, 0.05); /* Subtle green tint */
+  border-radius: var(--radius-sm); /* Rounded corners */
 }
 
-/* Fade in animation */
+/* MODE INDICATOR */
+.mode-indicator {
+  text-align: center; /* Center text */
+  margin-top: var(--space-md); /* Space above */
+  padding: var(--space-sm); /* Inner padding */
+  background: rgba(168, 85, 247, 0.1); /* Purple tint */
+  border-radius: var(--radius-sm); /* Rounded corners */
+}
+
+.mode-indicator small {
+  color: #a855f7; /* Purple text */
+  font-size: 0.75rem; /* Smaller text */
+  font-weight: 500; /* Medium weight */
+  text-transform: uppercase; /* Uppercase */
+  letter-spacing: 0.05em; /* Letter spacing */
+}
+
+/* ANIMATIONS */
+
+/* Fade in animation for result card */
 @keyframes fadeIn {
   from {
     opacity: 0; /* Start invisible */
@@ -269,26 +251,98 @@
   }
 }
 
-/* RESPONSIVE - Mobile adjustments */
-@media (max-width: 768px) {
+/* ============================================
+   RESPONSIVE - Mobile Adjustments
+============================================ */
+/* LAPTOP - Slightly smaller (1024px - 1199px) */
+@media (max-width: 1200px) {
   .certificate-form {
-    grid-template-columns: 1fr; /* Single column on mobile */
-    gap: var(--space-xl); /* Less gap */
+    grid-template-columns: 350px 480px; /* Proportionally smaller */
+    gap: var(--space-xl); /* Smaller gap */
+  }
+}
+
+/* TABLET - Stack vertically (768px - 1023px) */
+@media (max-width: 1024px) {
+  .certificate-form {
+    grid-template-columns: 1fr; /* Single column */
+    gap: var(--space-xl); /* Vertical gap */
+    max-width: 600px; /* Constrain width */
+    justify-content: stretch; /* Full width */
+  }
+}
+
+@media (max-width: 768px) {
+  /* Stack form and preview vertically on mobile */
+  .certificate-form {
+    grid-template-columns: 1fr; /* Single column */
+    gap: var(--space-lg); /* Smaller gap */
+    padding: 0 var(--space-md); /* Less side padding */
+    margin-top: var(--space-lg); /* Less top margin */
+  }
+
+  /* Shorter placeholder on mobile */
+  .certificate-form__preview-placeholder {
+    min-height: 300px; /* Shorter */
+    padding: var(--space-xl); /* Less padding */
+  }
+
+  /* Smaller icon on mobile */
+  .certificate-form__preview-icon {
+    font-size: 3rem; /* Smaller */
+  }
+
+  /* Stack action buttons vertically on mobile */
+  .certificate-result__actions {
+    flex-direction: column; /* Stack vertically */
+  }
+
+  .certificate-result__actions > * {
+    width: 100%; /* Full width buttons */
+    white-space: normal; /* Allow text wrapping */
+  }
+
+  /* Adjust result padding on mobile */
+  .certificate-result {
+    padding: var(--space-lg); /* Less padding */
+  }
+
+  /* Smaller title on mobile */
+  .certificate-result__title {
+    font-size: 1.25rem; /* Smaller title */
+  }
+
+  .certificate-text-content {
+    font-size: 0.7rem; /* Slightly smaller */
+  }
+
+  /* Adjust collapsible max-height for mobile */
+  .certificate-result__text-collapsible.expanded {
+    max-height: 400px; /* Taller on mobile (narrower = more vertical space) */
+  }
+}
+
+/* Extra small screens (< 480px) */
+@media (max-width: 480px) {
+  .certificate-form {
+    gap: var(--space-md); /* Minimal gap */
+    padding: 0 var(--space-sm); /* Minimal padding */
+  }
+
+  .certificate-result {
+    padding: var(--space-md); /* Minimal padding */
+  }
+
+  .certificate-result__title {
+    font-size: 1.125rem; /* Even smaller title */
   }
 
   .certificate-form__preview-placeholder {
-    min-height: 300px; /* Shorter on mobile */
+    min-height: 250px; /* Shorter still */
+    padding: var(--space-lg); /* Minimal padding */
   }
 
   .certificate-form__preview-icon {
-    font-size: 3rem; /* Smaller icon */
-  }
-
-  .certificate-form__result-actions {
-    flex-direction: column; /* Stack buttons vertically */
-  }
-
-  .certificate-form__result-actions .btn {
-    width: 100%; /* Full width buttons */
+    font-size: 2.5rem; /* Even smaller icon */
   }
 }

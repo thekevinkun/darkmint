@@ -217,8 +217,12 @@
   justify-content: flex-end; /* Right-align buttons */
 }
 
+.form-actions .btn {
+  min-width: 100%; /* Fixed width for all action buttons */
+}
+
 /* RESPONSIVE - Mobile adjustments */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .form-input,
   .form-textarea,
   .form-select {
@@ -229,7 +233,7 @@
     flex-direction: column; /* Stack buttons vertically */
   }
 
-  .form-actions button {
+  .form-actions .btn {
     width: 100%; /* Full width buttons */
   }
 }

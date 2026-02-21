@@ -2,8 +2,8 @@
 
 import { useActionState } from "react";
 import { generateCertificate } from "@/app/actions";
+import Button from "@/components/Button";
 import SubmitButton from "@/components/SubmitButton";
-import { useState } from "react";
 
 const CertificateForm = () => {
   // useActionState manages form submission and state
@@ -93,7 +93,9 @@ const CertificateForm = () => {
           {/* Submit button */}
 
           <div className="form-actions form-actions--center">
-            <SubmitButton />
+            <SubmitButton loadingText="Generating...">
+              🤖 Generate Certificate
+            </SubmitButton>
           </div>
 
           {/* Info card below form */}
@@ -118,7 +120,7 @@ const CertificateForm = () => {
           </div>
         </form>
       </div>
-        
+
       {/* Preview placeholder (will show AI results) */}
       <div className="certificate-form__preview">
         {/* Display Error Message (if any)*/}
@@ -135,7 +137,7 @@ const CertificateForm = () => {
               ✨ Your Certificate is Ready!
             </h3>
 
-            {/* Generated Image */}
+            {/* Generated Image - MAIN FOCUS */}
             <div className="certificate-result__image-container">
               <img
                 src={state.imageUrl}
@@ -144,20 +146,53 @@ const CertificateForm = () => {
               />
             </div>
 
-            {/* Generated Text */}
-            <div className="certificate-result__text">
-              <h4>Certificate Text:</h4>
-              <div className="certificate-text-content">
-                {state.certificateText}
+            {/* Action buttons */}
+            <div className="certificate-result__actions">
+              {/* Download button */}
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  const link = document.createElement("a");
+                  link.href = state.imageUrl ?? "";
+                  link.target = "_blank";
+                  link.download = "certificate.png";
+                  link.click();
+                }}
+              >
+                📥 Download Image
+              </Button>
+
+              {/* View text button */}
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  const textSection = document.getElementById("cert-text");
+                  textSection?.classList.toggle("expanded");
+                }}
+              >
+                📄 View Certificate Text
+              </Button>
+            </div>
+
+            {/* Collapsible Text Section - HIDDEN BY DEFAULT */}
+            <div
+              id="cert-text"
+              className="certificate-result__text-collapsible"
+            >
+              <div className="certificate-result__text">
+                <h4>Certificate Text</h4>
+                <div className="certificate-text-content">
+                  {state.certificateText}
+                </div>
               </div>
             </div>
 
-            {/* Show which mode is active */}
-              {state.mode && (
-                <div className="mode-indicator">
-                  <small>{state.mode}</small>
-                </div>
-              )}
+            {/* Mode indicator */}
+            {state.mode && (
+              <div className="mode-indicator">
+                <small>{state.mode}</small>
+              </div>
+            )}
           </div>
         ) : (
           <div className="card card--flat">

@@ -1,32 +1,59 @@
 "use client";
 
+import React from "react";
 import { useFormStatus } from "react-dom";
 
-const SubmitButton = () => {
+// Props interface
+interface SubmitButtonProps {
+  // Content
+  children?: React.ReactNode;
+  loadingText?: string;
+
+  // Styling
+  variant?: "primary" | "secondary" | "ghost" | "neon";
+  size?: "small" | "medium" | "large";
+  className?: string;
+}
+
+const SubmitButton: React.FC<SubmitButtonProps> = ({
+  children = "Submit",
+  loadingText = "Submitting...",
+  variant = "primary",
+  size = "large",
+  className = "",
+}) => {
   // useFormStatus gives us the parent form's state
   // pending = true when form is submitting
-  // No need to manually manage loading state!
   const { pending } = useFormStatus();
+
+  // Build className string
+  const buttonClasses = [
+    "btn",
+    `btn-${variant}`,
+    size !== "medium" && `btn--${size}`,
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <button
-      type="submit" // This submits the parent form
+      type="submit" // Always submit type
       disabled={pending} // Disable while submitting
-      className="btn btn-primary btn--large"
+      className={buttonClasses}
       style={{
-        // Add loading opacity when pending
         opacity: pending ? 0.7 : 1,
         cursor: pending ? "not-allowed" : "pointer",
       }}
     >
-      {/* Show different text based on pending state */}
+      {/* Show loading state or normal content */}
       {pending ? (
         <>
           <span className="spinner">⚡</span>
-          Generating...
+          {loadingText}
         </>
       ) : (
-        "🤖 Generate Certificate"
+        children
       )}
     </button>
   );
