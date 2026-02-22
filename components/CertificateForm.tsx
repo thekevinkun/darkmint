@@ -1,8 +1,10 @@
 "use client";
 
-import { useActionState } from "react";
-import { generateCertificate } from "@/app/actions";
-import { Button, SubmitButton } from "@/components";
+import { useState, useEffect, useActionState } from "react";
+import { generateCertificate } from "@/app/actions/generate-certificate";
+import { uploadToIPFS } from "@/app/actions/upload-to-ipfs";
+
+import { Button, SubmitButton, MintButton } from "@/components";
 
 const CertificateForm = () => {
   // useActionState manages form submission and state
@@ -12,6 +14,50 @@ const CertificateForm = () => {
     success: false, // Initial state: no success yet
   });
 
+  // Stores the IPFS metadata URI after upload (used in Phase 6 for minting)
+  const [metadataUri, setMetadataUri] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  // Store form values when user submits — used for IPFS metadata
+  const [formValues, setFormValues] = useState({
+    name: "",
+    certType: "Web3 Developer",
+    skills: "",
+  });
+
+  // When AI generation succeeds, automatically upload to IPFS
+  useEffect(() => {
+    if (state.success && state.imageUrl) {
+      handleUploadToIPFS();
+    }
+  }, [state.success, state.imageUrl]);
+
+  // Upload function — runs automatically after generation
+  const handleUploadToIPFS = async () => {
+    if (!state.imageUrl || !state.certificateText) return;
+
+    setIsUploading(true);
+    setUploadError(null);
+
+    // Use stored form values — no DOM querying needed!
+    const result = await uploadToIPFS(
+      state.imageUrl,
+      formValues.name,
+      formValues.certType,
+      formValues.skills,
+    );
+
+    setIsUploading(false);
+
+    if (result.success && result.metadataUri) {
+      setMetadataUri(result.metadataUri); // Save for Phase 6 minting!
+      console.log("🎉 Ready to mint:", result.metadataUri);
+    } else {
+      setUploadError(result.error || "Upload failed");
+    }
+  };
+
   return (
     <div className="certificate-form">
       {/* 
@@ -20,7 +66,17 @@ const CertificateForm = () => {
         No onSubmit needed - React 19 handles it!
       */}
       <div style={{ height: "min-content" }} className="card card--glowing">
-        <form action={formAction}>
+        <form
+          action={(formData) => {
+            // Save form values BEFORE the server action clears them
+            setFormValues({
+              name: formData.get("name") as string,
+              certType: formData.get("certType") as string,
+              skills: formData.get("skills") as string,
+            });
+            formAction(formData); // Then call the actual server action
+          }}
+        >
           {/* Name field */}
           <div className="form-group">
             <label htmlFor="name" className="form-label form-label--required">
@@ -98,7 +154,7 @@ const CertificateForm = () => {
           </div>
 
           {/* Info card below form */}
-          <div className="certificate-form__info">
+          {/* <div className="certificate-form__info">
             <div className="card card--dark" style={{ marginTop: "32px" }}>
               <div className="card__body">
                 <p
@@ -108,15 +164,15 @@ const CertificateForm = () => {
                     color: "var(--text-tertiary)",
                   }}
                 >
-                  {/* 💡 <strong>Coming in:</strong> AI will generate your custom
+                  💡 <strong>Coming in:</strong> AI will generate your custom
                   certificate text and image.
-                  <br /> */}
+                  <br />
                   🔗 <strong>Coming:</strong> Your certificate will be minted as
                   an NFT on the blockchain.
                 </p>
               </div>
             </div>
-          </div>
+          </div> */}
         </form>
       </div>
 
@@ -144,6 +200,51 @@ const CertificateForm = () => {
                 className="certificate-result__image"
               />
             </div>
+
+            {/* IPFS Upload Status */}
+            {isUploading && (
+              <p
+                style={{
+                  textAlign: "center",
+                  color: "#a855f7",
+                  marginTop: "1rem",
+                }}
+              >
+                ⚡ Saving to IPFS...
+              </p>
+            )}
+
+            {uploadError && (
+              <p
+                style={{
+                  textAlign: "center",
+                  color: "#f87171",
+                  marginTop: "1rem",
+                }}
+              >
+                {uploadError}
+              </p>
+            )}
+
+            {metadataUri && (
+              <p
+                style={{
+                  textAlign: "center",
+                  color: "#00ff88",
+                  marginTop: "1rem",
+                  fontSize: "0.875rem",
+                }}
+              >
+                Saved to IPFS!
+              </p>
+            )}
+
+            {/* Mint NFT Button - appears after IPFS upload completes */}
+            {metadataUri && (
+              <div style={{ marginTop: "1rem" }}>
+                <MintButton metadataUri={metadataUri} />
+              </div>
+            )}
 
             {/* Action buttons */}
             <div className="certificate-result__actions">

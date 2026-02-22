@@ -66,14 +66,7 @@ const Button: React.FC<ButtonProps> = ({
       }}
     >
       {/* Show loading state or normal content */}
-      {loading ? (
-        <>
-          <span className="spinner">⚡</span>
-          {loadingText}
-        </>
-      ) : (
-        children
-      )}
+      {loading ? loadingText : children}
     </button>
   );
 };
