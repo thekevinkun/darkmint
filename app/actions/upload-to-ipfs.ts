@@ -79,9 +79,16 @@ export async function uploadToIPFS(
     };
   } catch (error: any) {
     console.error("❌ IPFS upload failed:", error);
+    // Try to extract clean message from nested Pinata auth errors
+
+    const rawMessage = error?.message || "";
+    const match = rawMessage.match(/"message":"([^"]+)"/);
+    const cleanMessage = match
+      ? match[1]
+      : rawMessage || "Failed to upload to IPFS. Please try again.";
     return {
       success: false,
-      error: error.message || "Failed to upload to IPFS",
+      error: cleanMessage,
     };
   }
 }

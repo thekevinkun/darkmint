@@ -6,7 +6,8 @@ import React from "react";
 interface ButtonProps {
   // Content
   children: React.ReactNode; // Button text/content
-  
+  style?: React.CSSProperties; // Custom inline styles
+
   // Behavior
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
@@ -29,6 +30,7 @@ interface ButtonProps {
 const Button: React.FC<ButtonProps> = ({
   // Destructure props with defaults
   children,
+  style,
   onClick,
   type = "button", // Default to "button" to prevent accidental form submission
   disabled = false,
@@ -60,6 +62,7 @@ const Button: React.FC<ButtonProps> = ({
       title={title}
       aria-label={ariaLabel || (typeof children === "string" ? children : undefined)}
       style={{
+        ...style, // Allow custom styles to override defaults
         // Add loading styles when loading
         opacity: loading ? 0.7 : 1,
         cursor: disabled || loading ? "not-allowed" : "pointer",

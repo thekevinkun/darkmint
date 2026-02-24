@@ -4,7 +4,9 @@ import CertificateForm from "./CertificateForm";
 import Button from "./Button";
 import MintButton from "./MintButton";
 import SubmitButton from "./SubmitButton";
+import ShareButtons from "./ShareButtons";
 import WalletConnect from "./WalletConnect";
+import MyNFTs from "./MyNFTs";
 
 export {
   Header,
@@ -13,5 +15,7 @@ export {
   Button,
   MintButton,
   SubmitButton,
+  ShareButtons,
   WalletConnect,
+  MyNFTs,
 };

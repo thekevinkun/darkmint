@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components";
 import {
@@ -11,12 +12,13 @@ import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/contract";
 
 interface MintButtonProps {
   metadataUri: string; // The ipfs://Qm...
+  onMintSuccess: (hash: string) => void; // Callback to pass tx hash back to parent
 }
 
 // MintButton Component
 // Calls the smart contract to mint the NFT
 // Uses Wagmi hooks to interact with blockchain
-const MintButton = ({ metadataUri }: MintButtonProps) => {
+const MintButton = ({ metadataUri, onMintSuccess }: MintButtonProps) => {
   // Get the connected wallet address
   const { address, isConnected } = useAccount();
 
@@ -43,6 +45,13 @@ const MintButton = ({ metadataUri }: MintButtonProps) => {
     });
   };
 
+  // Notify parent when mint is confirmed
+  useEffect(() => {
+    if (isSuccess && hash) {
+      onMintSuccess(hash);
+    }
+  }, [isSuccess, hash]);
+
   // Wallet not connected
   if (!isConnected) {
     return (
@@ -57,6 +66,15 @@ const MintButton = ({ metadataUri }: MintButtonProps) => {
       </p>
     );
   }
+
+  // Screen reader status message
+  const statusMessage = isPending
+    ? "Waiting for MetaMask confirmation"
+    : isConfirming
+    ? "Minting your certificate, please wait"
+    : isSuccess
+    ? "Certificate minted successfully!"
+    : "";
 
   return (
     <div style={{ textAlign: "center", marginTop: "1rem" }}>
@@ -121,6 +139,24 @@ const MintButton = ({ metadataUri }: MintButtonProps) => {
             View transaction on Etherscan ↗
           </Link>
         </div>
+      )}
+
+      {/* Screen reader only status announcer */}
+      {statusMessage && (
+        <p
+          role="status"
+          aria-live="polite"
+          style={{
+            position: "absolute",
+            width: "1px",
+            height: "1px",
+            overflow: "hidden",
+            clip: "rect(0,0,0,0)",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {statusMessage}
+        </p>
       )}
     </div>
   );

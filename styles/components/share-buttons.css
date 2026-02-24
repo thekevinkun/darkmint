@@ -1,0 +1,92 @@
+/*    
+   Share Buttons Component
+   Social sharing row for minted certificates
+*/
+
+.share-buttons {
+  margin-top: var(--space-lg); /* Space above */
+  padding-top: var(--space-lg); /* Inner top spacing */
+  border-top: 1px solid rgba(168, 85, 247, 0.2); /* Subtle purple divider */
+}
+
+.share-buttons__label {
+  text-align: center;
+  color: #9ca3af; /* Muted gray */
+  font-size: 0.875rem;
+  margin-bottom: var(--space-md);
+}
+
+/* Row of buttons */
+.share-buttons__row {
+  display: flex;
+  gap: var(--space-sm); /* Space between buttons */
+  justify-content: center; /* Center the row */
+  flex-wrap: wrap; /* Wrap on small screens */
+}
+
+/* Base share button */
+.share-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* Space between icon and text */
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.share-btn__icon {
+  font-size: 0.9rem;
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* X (Twitter) — dark with white text */
+.share-btn--x {
+  background: #000000;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.share-btn--x:hover {
+  background: #1a1a1a;
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+/* LinkedIn — blue */
+.share-btn--linkedin {
+  background: #0077b5;
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.share-btn--linkedin:hover {
+  background: #005e93;
+  transform: translateY(-2px);
+}
+
+/* Copy Link — purple ghost */
+.share-btn--copy {
+  background: rgba(168, 85, 247, 0.1);
+  color: #a855f7;
+  border-color: rgba(168, 85, 247, 0.3);
+}
+
+.share-btn--copy:hover {
+  background: rgba(168, 85, 247, 0.2);
+  border-color: rgba(168, 85, 247, 0.6);
+  transform: translateY(-2px);
+}
+
+/* Copied state — green confirmation */
+.share-btn--copied {
+  background: rgba(0, 255, 136, 0.1);
+  color: #00ff88;
+  border-color: rgba(0, 255, 136, 0.3);
+}

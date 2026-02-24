@@ -2,8 +2,10 @@
 @import "./animations.css";
 @import "./utilities.css";
 @import "./components/button.css";
+@import "./components/share-buttons.css";
 @import "./components/card.css";
 @import "./components/certificate-form.css";
 @import "./components/form.css";
 @import "./components/modal.css";
+@import "./components/my-nfts.css";
 @import "./pages/home.css";

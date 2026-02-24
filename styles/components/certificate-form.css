@@ -27,6 +27,41 @@
   /* Inherits styles from parent */
 }
 
+/*    
+  Restore Session Banner
+  Shows when a pending mint is recovered
+  from localStorage
+ */
+.certificate-form__restore-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Text left, button right */
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  background: rgba(168, 85, 247, 0.1); /* Purple tint */
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-lg);
+  font-size: 0.875rem;
+  color: #e5e7eb;
+}
+
+.certificate-form__restore-dismiss {
+  background: none;
+  border: none;
+  color: #a855f7; /* Purple */
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 0;
+  white-space: nowrap;
+  transition: color var(--transition-fast);
+}
+
+.certificate-form__restore-dismiss:hover {
+  color: #ff00ff; /* Magenta on hover */
+}
+
 .certificate-form__preview-placeholder {
   display: flex; /* Flex layout */
   flex-direction: column; /* Stack vertically */
@@ -141,9 +176,7 @@
   overflow: hidden; /* Hide overflow */
   transition: max-height 0.4s ease-out; /* Smooth expand - fixed timing */
   opacity: 0; /* Start invisible */
-  transition:
-    max-height 0.4s ease-out,
-    opacity 0.3s ease-out; /* Smooth transitions */
+  transition: max-height 0.4s ease-out, opacity 0.3s ease-out; /* Smooth transitions */
 }
 
 .certificate-result__text-collapsible.expanded {
@@ -237,8 +270,34 @@
   letter-spacing: 0.05em; /* Letter spacing */
 }
 
-/* ANIMATIONS */
+/* 
+  Inline field validation errors
+  Shown below individual form fields
+*/
+.form-field-error {
+  color: #f87171; /* Red text */
+  font-size: 0.8rem; /* Smaller than normal */
+  margin-top: var(--space-xs); /* Small gap from input */
+  margin-bottom: 0; /* Remove default margin */
+  display: flex; /* Align icon + text */
+  align-items: center; /* Vertically center */
+  gap: 4px; /* Space between icon and text */
+}
 
+.form-field-error::before {
+  content: "⚠"; /* Warning icon */
+  font-size: 0.75rem; /* Slightly smaller */
+}
+
+/* Highlight the input itself when invalid */
+.form-input.invalid,
+.form-select.invalid,
+.form-textarea.invalid {
+  border-color: rgba(239, 68, 68, 0.7); /* Red border */
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.15); /* Subtle red glow */
+}
+
+/* ANIMATIONS */
 /* Fade in animation for result card */
 @keyframes fadeIn {
   from {
