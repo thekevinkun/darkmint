@@ -3,6 +3,7 @@
 import { useState, useEffect, useActionState } from "react";
 import Image from "next/image";
 import { useAccount } from "wagmi";
+
 import { generateCertificate } from "@/app/actions/generate-certificate";
 import { uploadToIPFS } from "@/app/actions/upload-to-ipfs";
 
@@ -177,10 +178,10 @@ const CertificateForm = () => {
 
       <div className="certificate-form">
         {/* 
-        Form card
-        action prop connects to our Server Action via useActionState
-        No onSubmit needed - React 19 handles it!
-      */}
+          Form card
+          action prop connects to our Server Action via useActionState
+          No onSubmit needed - React 19 handles it!
+        */}
         <div style={{ height: "min-content" }} className="card card--glowing">
           {!isConnected && (
             <div style={{ textAlign: "center", padding: "2rem" }}>

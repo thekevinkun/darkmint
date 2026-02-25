@@ -24,11 +24,9 @@ contract DarkMint is ERC721, ERC721URIStorage, Ownable {
   // Sets the NFT collection name and symbol
   constructor() ERC721("DarkMint", "DCERT") Ownable(msg.sender) {}
 
-  // ============================================
   // Mint Certificate Function
   // Creates a new NFT and assigns it to the user
   // Anyone can call this (public)
-  // ============================================
   function mintCertificate(
     address to,  // Wallet address that will receive the NFT
     string memory uri  // IPFS link to certificate metadata
@@ -45,11 +43,9 @@ contract DarkMint is ERC721, ERC721URIStorage, Ownable {
     return tokenId; // Return the new token's ID
   }
 
-  // ============================================
   // Required Overrides
   // Solidity requires these when using multiple
   // inherited contracts that have the same function
-  // ============================================
   function tokenURI(uint256 tokenId)
     public view
     override(ERC721, ERC721URIStorage)

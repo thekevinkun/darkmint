@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { createPublicClient, http } from "viem";
 import { sepolia } from "viem/chains";
+
 import { Certificate } from "@/components";
 
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/contract";

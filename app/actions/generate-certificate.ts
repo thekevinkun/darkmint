@@ -21,10 +21,8 @@ interface GenerateResult {
   mode?: string; // Which mode was used (for debugging)
 }
 
-// ============================================
 // Generate Certificate Server Action
 // Calls OpenAI OR uses mock data based on flag
-// ============================================
 export async function generateCertificate(
   prevState: Partial<GenerateResult>, // Previous form state (for useActionState)
   formData: FormData, // Form data submitted by user

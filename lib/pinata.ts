@@ -2,6 +2,7 @@
 // Pinata Client Configuration
 // Handles uploading files and JSON to IPFS
 // ============================================
+
 import { PinataSDK } from "pinata";
 
 // Initialize Pinata client with JWT auth

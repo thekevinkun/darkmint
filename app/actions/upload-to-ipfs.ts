@@ -40,10 +40,8 @@ export async function uploadToIPFS(
       };
     }
 
-    // ============================================
     // STEP 1: Download real image from the URL, pass through placeholders
     // OpenAI URLs expire after 1 hour — save to IPFS now!
-    // ============================================
     let imageUri: string;
 
     const isPlaceholder = imageUrl.includes("placehold.co");
@@ -65,11 +63,9 @@ export async function uploadToIPFS(
       imageUri = `ipfs://${imageUpload.cid}`;
       console.log("✅ Image uploaded:", imageUri);
     }
-    // ============================================
     // STEP 3: Create NFT metadata JSON
     // This is the standard ERC721 metadata format
     // OpenSea, MetaMask, and all NFT platforms read this
-    // ============================================
     const metadata = {
       name: `${certType} Certificate — ${name}`,
       description: `This certificate recognizes ${name} for their expertise in ${certType}. Skills: ${skills}`,
@@ -83,9 +79,7 @@ export async function uploadToIPFS(
       ],
     };
 
-    // ============================================
     // STEP 4: Upload metadata JSON to IPFS
-    // ============================================
     console.log("📤 Uploading metadata to IPFS...");
     const metadataUpload = await pinata.upload.public.json(metadata);
     const metadataUri = `ipfs://${metadataUpload.cid}`; // This is what gets minted!

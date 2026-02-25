@@ -3,6 +3,8 @@
 🎓⛓️ An AI-powered Web3 certificate minter with a purple/pink cyberpunk aesthetic.
 Generate custom certificates with AI, store them on IPFS, and mint them as NFTs on the blockchain.
 
+🌐 **Live**: [darkmint-web.vercel.app](https://darkmint-web.vercel.app)
+
 <br >
 <img width="148" height="148" alt="logo" src="https://github.com/user-attachments/assets/e430a180-8da0-4f36-a1fa-8c74f4466681" /><br ><br>
 <img width="1200" height="630" alt="og-image" src="https://github.com/user-attachments/assets/02381b7e-0ba1-4baa-b787-78d033635061" />

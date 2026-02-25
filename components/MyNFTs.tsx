@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useAccount } from "wagmi";
-import { Button, ShareButtons } from "@/components";
 
 import { getNFTs } from "@/app/actions/get-nfts";
+import { Button, ShareButtons } from "@/components";
+
 import { CONTRACT_ADDRESS } from "@/lib/contract";
 
 // Shape of each NFT from Alchemy API

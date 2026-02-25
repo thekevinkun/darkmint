@@ -2,12 +2,14 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { Button } from "@/components";
 import {
   useAccount,
   useWriteContract,
   useWaitForTransactionReceipt,
 } from "wagmi";
+
+import { Button } from "@/components";
+
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/contract";
 
 interface MintButtonProps {
