@@ -1,9 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+
 import { WalletConnect } from "@/components";
 
 const Header = () => {
+  const pathname = usePathname();
+
   return (
     <header className="header">
       {/* Skip to main content — visible only on keyboard focus */}
@@ -13,11 +18,19 @@ const Header = () => {
 
       <div className="header__container">
         {/* Logo */}
-        <div className="header__logo">DarkMint</div>
+        <Link href="/" className="header__logo-container">
+          <Image src="/logo.png" alt="DarkMint Logo" width={32} height={32} />
+          <div className="header__logo">DarkMint</div>
+        </Link>
 
         {/* Navigation links */}
         <nav className="header__nav">
-          <Link href="/" className="header__nav-link header__nav-link--active">
+          <Link
+            href="/"
+            className={`header__nav-link ${
+              pathname === "/" ? "header__nav-link--active" : ""
+            }`}
+          >
             Home
           </Link>
           <Link href="#features" className="header__nav-link">
@@ -26,7 +39,12 @@ const Header = () => {
           <Link href="#how-it-works" className="header__nav-link">
             How It Works
           </Link>
-          <Link href="/my-nfts" className="header__nav-link">
+          <Link
+            href="/my-nfts"
+            className={`header__nav-link ${
+              pathname === "/my-nfts" ? "header__nav-link--active" : ""
+            }`}
+          >
             My Certificates
           </Link>
           <WalletConnect /> {/* Now safely inside a client component */}
