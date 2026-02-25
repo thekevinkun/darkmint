@@ -82,6 +82,47 @@
   background: rgba(255, 0, 255, 0.1); /* Magenta tint background */
 }
 
+/* Hamburger button — hidden on desktop */
+.header__hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-sm);
+  z-index: 1001;
+}
+
+.header__hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: var(--transition-base);
+  transform-origin: center;
+}
+
+/* Animate hamburger to X when open */
+.header__hamburger--open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.header__hamburger--open span:nth-child(2) {
+  opacity: 0;
+}
+
+.header__hamburger--open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Overlay behind mobile menu */
+.header__overlay {
+  display: none;
+}
+
 /*
   Skip Navigation Link
   Hidden until focused — keyboard accessibility 
@@ -191,6 +232,49 @@
 /* RESPONSIVE - Mobile adaptations */
 
 /* Tablet and below (768px) */
+@media (max-width: 1024px) {
+  .header__hamburger {
+    display: flex; /* Show hamburger on mobile */
+  }
+
+  .header__nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+    position: fixed;
+    top: 0;
+    right: -100%; /* Hidden off screen */
+    width: 75%;
+    max-width: 300px;
+    height: 100vh;
+    background: var(--bg-secondary);
+    border-left: 1px solid rgba(255, 0, 255, 0.2);
+    padding: 5rem var(--space-lg) var(--space-lg);
+    transition: right 0.3s ease;
+    z-index: 1000;
+    box-shadow: -4px 0 30px rgba(168, 85, 247, 0.15);
+  }
+
+  .header__nav--open {
+    right: 0; /* Slide in */
+  }
+
+  .header__nav-link {
+    width: 100%; /* Full width links */
+    font-size: 1.125rem;
+  }
+
+  .header__overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 99;
+    backdrop-filter: blur(2px);
+  }
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 0 var(--space-md); /* Less padding on mobile */
@@ -198,10 +282,6 @@
 
   .header__container {
     padding: 0 var(--space-md); /* Less padding on mobile */
-  }
-
-  .header__nav {
-    gap: var(--space-md); /* Tighter nav spacing */
   }
 
   .main {
@@ -231,11 +311,6 @@
 @media (max-width: 480px) {
   .header__logo {
     font-size: 1.25rem; /* Smaller logo on small screens */
-  }
-
-  .header__nav {
-    flex-direction: column; /* Stack nav vertically if needed */
-    gap: var(--space-sm); /* Tighter spacing */
   }
 
   .footer__links {
