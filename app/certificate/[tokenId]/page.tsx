@@ -1,7 +1,6 @@
-import Link from "next/link";
-import Image from "next/image";
 import { createPublicClient, http } from "viem";
 import { sepolia } from "viem/chains";
+import { Certificate } from "@/components";
 
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/contract";
 
@@ -83,48 +82,10 @@ export default async function CertificatePage({
   );
 
   return (
-    <main
-      id="main-content"
-      className="main"
-    >
-      <div 
-        style={{
-          maxWidth: "600px",
-          margin: "0 auto",
-          paddingLeft: "1rem",
-          paddingRight: "1rem",
-          textAlign: "center",
-        }}
-        className="section"
-      >
-      <h1 style={{ color: "#a855f7" }}>Certificate #{tokenId}</h1>
-      {imageUrl && (
-        <Image
-          src={imageUrl}
-          alt={metadata?.name ?? `Certificate #${tokenId}`}
-          width={1024}
-          height={1024}
-          unoptimized
-          style={{
-            width: "100%",
-            height: "auto",
-            borderRadius: "12px",
-            border: "1px solid #ff00ff",
-          }}
-        />
-      )}
-      {metadata?.name && (
-        <h2 style={{ color: "#e5e7eb", marginTop: "1rem" }}>{metadata.name}</h2>
-      )}
-      <Link
-        href={`https://sepolia.etherscan.io/token/${CONTRACT_ADDRESS}?a=${tokenId}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{ display: "inline-block", marginTop: "1rem", color: "#a855f7" }}
-      >
-        View on Etherscan ↗
-      </Link>
-      </div>
-    </main>
+    <Certificate
+      tokenId={tokenId}
+      metadata={metadata}
+      imageUrl={imageUrl ?? null}
+    />
   );
 }

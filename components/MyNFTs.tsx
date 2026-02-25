@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useAccount } from "wagmi";
-import { Button } from "@/components";
+import { Button, ShareButtons } from "@/components";
+
 import { CONTRACT_ADDRESS } from "@/lib/contract";
 
 // Shape of each NFT's metadata from IPFS
@@ -220,6 +221,20 @@ const MyNFTs = () => {
               >
                 View on Etherscan ↗
               </Link>
+
+              <ShareButtons
+                recipientName={
+                  nft.metadata.attributes.find(
+                    (a) => a.trait_type === "Recipient",
+                  )?.value ?? ""
+                }
+                certType={
+                  nft.metadata.attributes.find(
+                    (a) => a.trait_type === "Certificate Type",
+                  )?.value ?? ""
+                }
+                tokenId={nft.tokenId}
+              />
             </div>
           </div>
         ))}
