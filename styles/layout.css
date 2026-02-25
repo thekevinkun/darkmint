@@ -36,6 +36,17 @@
   padding: 0 var(--space-lg); /* Side padding */
 }
 
+.header__logo-container {
+  display: flex; /* Flex for logo */
+  align-items: center; /* Vertical center */
+  text-decoration: none; /* Remove link underline */
+  gap: var(--space-sm);
+}
+
+.header__logo-container:hover {
+  text-decoration: none; /* No underline on hover */
+}
+
 .header__logo {
   font-size: 1.5rem; /* Large logo text */
   font-weight: 700; /* Bold */
@@ -107,7 +118,6 @@
   background: var(--bg-secondary); /* Darker background */
   border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle top border */
   padding: var(--space-2xl) 0; /* Vertical padding */
-  margin-top: var(--space-3xl); /* Space from main content */
 }
 
 .footer__container {

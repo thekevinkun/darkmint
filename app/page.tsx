@@ -4,7 +4,13 @@ import { CertificateForm } from "@/components";
 // Homepage component (Server Component by default)
 export default function HomePage() {
   return (
-    <>
+    <main 
+      id="main-content" 
+      style={{
+        paddingBottom: 0,
+      }} 
+      className="main"
+    >
       {/* Hero Section */}
       <Hero />
 
@@ -30,6 +36,6 @@ export default function HomePage() {
 
       {/* Stats Section */}
       <Stats />
-    </>
+    </main>
   );
 }

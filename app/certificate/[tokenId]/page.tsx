@@ -85,13 +85,18 @@ export default async function CertificatePage({
   return (
     <main
       id="main-content"
-      style={{
-        maxWidth: "600px",
-        margin: "4rem auto",
-        padding: "0 1rem",
-        textAlign: "center",
-      }}
+      className="main"
     >
+      <div 
+        style={{
+          maxWidth: "600px",
+          margin: "0 auto",
+          paddingLeft: "1rem",
+          paddingRight: "1rem",
+          textAlign: "center",
+        }}
+        className="section"
+      >
       <h1 style={{ color: "#a855f7" }}>Certificate #{tokenId}</h1>
       {imageUrl && (
         <Image
@@ -119,6 +124,7 @@ export default async function CertificatePage({
       >
         View on Etherscan ↗
       </Link>
+      </div>
     </main>
   );
 }

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const Hero = () => {
   return (
-    <section className="section" style={{ paddingTop: "80px" }}>
+    <section className="section">
       <div className="container container--narrow text-center">
         {/* Main headline with gradient text */}
         <h1 className="animate-fade-in" style={{ marginBottom: "24px" }}>

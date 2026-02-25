@@ -62,10 +62,8 @@ export default function RootLayout({
           {/* Header - Sticky navigation at top */}
           <Header />
 
-          {/* Main content area - each page's content renders here */}
-          <main className="main" id="main-content">
-            {children} {/* Page content injected here */}
-          </main>
+          {/* Page content injected here */}
+          {children} 
 
           {/* Footer - Bottom section */}
           <Footer />
