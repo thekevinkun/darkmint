@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useActionState } from "react";
 import Image from "next/image";
+import { useAccount } from "wagmi";
 import { generateCertificate } from "@/app/actions/generate-certificate";
 import { uploadToIPFS } from "@/app/actions/upload-to-ipfs";
 
@@ -14,6 +15,9 @@ const CertificateForm = () => {
   const [state, formAction] = useActionState(generateCertificate, {
     success: false, // Initial state: no success yet
   });
+
+  // Store wallet address from wagmi for validation in server action
+  const { address, isConnected } = useAccount();
 
   // Persist the metadataUri, imageUrl, and certificateText to localStorage after IPFS upload.
   // When the user comes back, restore the state and show the mint button immediately — no need to regenerate.
@@ -178,136 +182,164 @@ const CertificateForm = () => {
         No onSubmit needed - React 19 handles it!
       */}
         <div style={{ height: "min-content" }} className="card card--glowing">
-          <form
-            aria-label="Certificate generation form"
-            action={(formData) => {
-              const name = formData.get("name") as string;
-              const certType = formData.get("certType") as string;
-              const skills = formData.get("skills") as string;
-
-              // Validate before sending to server
-              const errors = validateForm(name, certType, skills);
-              if (Object.keys(errors).length > 0) {
-                setValidationErrors(errors);
-                return; // Stop — don't submit
-              }
-
-              setValidationErrors({}); // Clear old errors
-              setFormValues({ name, certType, skills }); // Save form values BEFORE the server action clears them
-              formAction(formData); // Then call the actual server action
-            }}
-          >
-            {/* Name field */}
-            <div className="form-group">
-              <label htmlFor="name" className="form-label form-label--required">
-                Your Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                className={`form-input ${
-                  validationErrors.name ? "invalid" : ""
-                }`}
-                placeholder="Enter your full name"
-                required
-              />
-
-              {validationErrors.name && (
-                <p className="form-field-error" role="alert">
-                  {validationErrors.name}
-                </p>
-              )}
-
-              <p className="form-helper">
-                This will appear on your certificate
+          {!isConnected && (
+            <div style={{ textAlign: "center", padding: "2rem" }}>
+              <p style={{ fontSize: "2rem", marginBottom: "1rem" }}>🔌</p>
+              <h3 style={{ color: "#a855f7", marginBottom: "0.5rem" }}>
+                Connect Your Wallet
+              </h3>
+              <p
+                style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}
+              >
+                You need to connect your wallet before generating a certificate.
               </p>
             </div>
+          )}
 
-            {/* Certificate type select */}
-            <div className="form-group">
-              <label
-                htmlFor="certType"
-                className="form-label form-label--required"
-              >
-                Certificate Type
-              </label>
-              <select
-                id="certType"
-                name="certType"
-                className={`form-select ${
-                  validationErrors.certType ? "invalid" : ""
-                }`}
-                required
-              >
-                <option value="Web3 Developer">Web3 Developer</option>
-                <option value="Smart Contract Auditor">
-                  Smart Contract Auditor
-                </option>
-                <option value="Blockchain Architect">
-                  Blockchain Architect
-                </option>
-                <option value="DeFi Specialist">DeFi Specialist</option>
-                <option value="NFT Creator">NFT Creator</option>
-                <option value="Full-Stack Developer">
-                  Full-Stack Developer
-                </option>
-                <option value="React Developer">React Developer</option>
-                <option value="AI Engineer">AI Engineer</option>
-                <option value="Custom Achievement">Custom Achievement</option>
-              </select>
+          {isConnected && (
+            <form
+              aria-label="Certificate generation form"
+              action={(formData) => {
+                // Append wallet address to formData for server-side validation
+                if (!isConnected || !address) {
+                  setValidationErrors({
+                    name: "Please connect your wallet first.",
+                  });
+                  return;
+                }
+                formData.append("walletAddress", address);
 
-              {validationErrors.certType && (
-                <p className="form-field-error" role="alert">
-                  {validationErrors.certType}
+                // Extract values for client-side validation before sending to server
+                const name = formData.get("name") as string;
+                const certType = formData.get("certType") as string;
+                const skills = formData.get("skills") as string;
+
+                // Validate before sending to server
+                const errors = validateForm(name, certType, skills);
+                if (Object.keys(errors).length > 0) {
+                  setValidationErrors(errors);
+                  return; // Stop — don't submit
+                }
+
+                setValidationErrors({}); // Clear old errors
+                setFormValues({ name, certType, skills }); // Save form values BEFORE the server action clears them
+                formAction(formData); // Then call the actual server action
+              }}
+            >
+              {/* Name field */}
+              <div className="form-group">
+                <label
+                  htmlFor="name"
+                  className="form-label form-label--required"
+                >
+                  Your Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  className={`form-input ${
+                    validationErrors.name ? "invalid" : ""
+                  }`}
+                  placeholder="Enter your full name"
+                  required
+                />
+
+                {validationErrors.name && (
+                  <p className="form-field-error" role="alert">
+                    {validationErrors.name}
+                  </p>
+                )}
+
+                <p className="form-helper">
+                  This will appear on your certificate
                 </p>
-              )}
+              </div>
 
-              <p className="form-helper">
-                Choose the type of certificate you want
-              </p>
-            </div>
+              {/* Certificate type select */}
+              <div className="form-group">
+                <label
+                  htmlFor="certType"
+                  className="form-label form-label--required"
+                >
+                  Certificate Type
+                </label>
+                <select
+                  id="certType"
+                  name="certType"
+                  className={`form-select ${
+                    validationErrors.certType ? "invalid" : ""
+                  }`}
+                  required
+                >
+                  <option value="Web3 Developer">Web3 Developer</option>
+                  <option value="Smart Contract Auditor">
+                    Smart Contract Auditor
+                  </option>
+                  <option value="Blockchain Architect">
+                    Blockchain Architect
+                  </option>
+                  <option value="DeFi Specialist">DeFi Specialist</option>
+                  <option value="NFT Creator">NFT Creator</option>
+                  <option value="Full-Stack Developer">
+                    Full-Stack Developer
+                  </option>
+                  <option value="React Developer">React Developer</option>
+                  <option value="AI Engineer">AI Engineer</option>
+                  <option value="Custom Achievement">Custom Achievement</option>
+                </select>
 
-            {/* Skills textarea */}
-            <div className="form-group">
-              <label
-                htmlFor="skills"
-                className="form-label form-label--required"
-              >
-                Skills & Achievements
-              </label>
-              <textarea
-                id="skills"
-                name="skills"
-                className={`form-textarea ${
-                  validationErrors.skills ? "invalid" : ""
-                }`}
-                placeholder="Describe your skills, achievements, or what makes you special..."
-                required
-                rows={4}
-              />
+                {validationErrors.certType && (
+                  <p className="form-field-error" role="alert">
+                    {validationErrors.certType}
+                  </p>
+                )}
 
-              {validationErrors.skills && (
-                <p className="form-field-error" role="alert">
-                  {validationErrors.skills}
+                <p className="form-helper">
+                  Choose the type of certificate you want
                 </p>
-              )}
+              </div>
 
-              <p className="form-helper">
-                Be specific! This helps the AI create a better certificate.
-              </p>
-            </div>
+              {/* Skills textarea */}
+              <div className="form-group">
+                <label
+                  htmlFor="skills"
+                  className="form-label form-label--required"
+                >
+                  Skills & Achievements
+                </label>
+                <textarea
+                  id="skills"
+                  name="skills"
+                  className={`form-textarea ${
+                    validationErrors.skills ? "invalid" : ""
+                  }`}
+                  placeholder="Describe your skills, achievements, or what makes you special..."
+                  required
+                  rows={4}
+                />
 
-            {/* Submit button */}
+                {validationErrors.skills && (
+                  <p className="form-field-error" role="alert">
+                    {validationErrors.skills}
+                  </p>
+                )}
 
-            <div className="form-actions form-actions--center">
-              <SubmitButton loadingText="Generating...">
-                🤖 Generate Certificate
-              </SubmitButton>
-            </div>
+                <p className="form-helper">
+                  Be specific! This helps the AI create a better certificate.
+                </p>
+              </div>
 
-            {/* Info card below form */}
-            {/* <div className="certificate-form__info">
+              {/* Submit button */}
+
+              <div className="form-actions form-actions--center">
+                <SubmitButton loadingText="Generating...">
+                  🤖 Generate Certificate
+                </SubmitButton>
+              </div>
+
+              {/* Info card below form */}
+              {/* <div className="certificate-form__info">
             <div className="card card--dark" style={{ marginTop: "32px" }}>
               <div className="card__body">
                 <p
@@ -326,7 +358,8 @@ const CertificateForm = () => {
               </div>
             </div>
           </div> */}
-          </form>
+            </form>
+          )}
         </div>
 
         {/* Preview placeholder (will show AI results) */}

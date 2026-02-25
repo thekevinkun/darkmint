@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { createPublicClient, http } from "viem";
 import { sepolia } from "viem/chains";
 import { Certificate } from "@/components";
@@ -21,14 +22,18 @@ async function getTokenMetadata(tokenId: string) {
       args: [BigInt(tokenId)],
     })) as string;
 
+    if (!uri) return null;
+
     // Fetch metadata from IPFS
     const gatewayUrl = uri.replace(
       "ipfs://",
       "https://beige-causal-meadowlark-885.mypinata.cloud/ipfs/",
     );
     const res = await fetch(gatewayUrl);
+    if (!res.ok) return null;
     return await res.json();
   } catch {
+    // Contract throws when tokenId doesn't exist
     return null;
   }
 }
@@ -74,8 +79,18 @@ export default async function CertificatePage({
 }: {
   params: Promise<{ tokenId: string }>;
 }) {
+  // Validate tokenId is a valid number first
   const { tokenId } = await params;
+  if (!tokenId || isNaN(Number(tokenId)) || Number(tokenId) < 0) {
+    notFound();
+  }
+
+  // IF token doesn't exist on blockchain — show 404
   const metadata = await getTokenMetadata(tokenId);
+  if (!metadata) {
+    notFound();
+  }
+
   const imageUrl = metadata?.image?.replace(
     "ipfs://",
     "https://beige-causal-meadowlark-885.mypinata.cloud/ipfs/",

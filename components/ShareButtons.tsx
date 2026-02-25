@@ -26,13 +26,11 @@ const ShareButtons = ({
       : "https://darkmint.vercel.app";
 
   // The text that appears in the tweet/post
-  const shareText = `🎓 I just minted my ${certType} certificate as an NFT on @DarkMint!\n\nPowered by AI + Web3 🤖⛓️\n\n#DarkMint #Web3 #NFT #BlockchainCertificate`;
+  const shareText = `🎓 I just minted my ${certType} certificate as an NFT on @DarkMint!\n\n${shareUrl}\n\n#DarkMint #Web3 #NFT #BlockchainCertificate`;
 
   // X (Twitter) Share
   const handleXShare = () => {
-    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-      shareText,
-    )}&url=${encodeURIComponent(shareUrl)}`;
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
     window.open(url, "_blank", "noopener,noreferrer");
   };
 

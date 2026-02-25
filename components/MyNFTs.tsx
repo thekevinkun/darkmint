@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useAccount } from "wagmi";
 import { Button, ShareButtons } from "@/components";
 
+import { getNFTs } from "@/app/actions/get-nfts";
 import { CONTRACT_ADDRESS } from "@/lib/contract";
 
 // Shape of each NFT from Alchemy API
@@ -66,47 +67,34 @@ const MyNFTs = () => {
     setIsLoading(true);
     setError(null);
 
-    try {
-      // Alchemy NFT API — free, no block range limits
-      const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
-      const url = `https://eth-sepolia.g.alchemy.com/nft/v3/${alchemyKey}/getNFTsForOwner?owner=${address}&contractAddresses[]=${CONTRACT_ADDRESS}&withMetadata=true`;
+    const result = await getNFTs(address);
 
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("Failed to fetch NFTs from Alchemy");
-
-      const data = await res.json();
-      const ownedNfts = data.ownedNfts ?? [];
-
-      const cards: NFTCard[] = ownedNfts.map((nft: AlchemyNFT) => {
-        const tokenId = Number(nft.tokenId);
-
-        // Alchemy already fetches and parses the metadata for us
-        const metadata: NFTMetadata = {
-          name: nft.name ?? `DarkMint Certificate #${tokenId}`,
-          description: nft.description ?? "",
-          image: nft.image?.originalUrl ?? "",
-          attributes: nft.raw?.metadata?.attributes ?? [],
-        };
-
-        const imageUrl = ipfsToHttp(metadata.image);
-
-        return { tokenId, metadata, imageUrl };
-      });
-
-      setNftCards(cards);
-    } catch (err) {
-      console.error("❌ Failed to load NFTs:", err);
-      setError("Failed to load your certificates. Please try again.");
-    } finally {
+    if (!result.success || !result.nfts) {
+      setError(result.error ?? "Failed to load your certificates.");
       setIsLoading(false);
+      return;
     }
+
+    const cards: NFTCard[] = result.nfts.map((nft) => ({
+      tokenId: nft.tokenId,
+      metadata: {
+        name: nft.name,
+        description: nft.description,
+        image: nft.image,
+        attributes: nft.attributes,
+      },
+      imageUrl: ipfsToHttp(nft.image),
+    }));
+
+    setNftCards(cards);
+    setIsLoading(false);
   };
 
   // NOT CONNECTED STATE
   if (!isConnected) {
     return (
       <div className="my-nfts__empty">
-        <div className="my-nfts__empty-icon">🔒</div>
+        <div className="my-nfts__empty-icon">🔌</div>
         <h2>Connect Your Wallet</h2>
         <p>Connect your wallet to view your DarkMint certificates</p>
       </div>

@@ -6,7 +6,10 @@
 
 "use server";
 
+import { headers } from "next/headers";
+import { isAddress } from "viem";
 import { openai, USE_REAL_AI } from "@/lib/openai";
+import { generateRatelimit } from "@/lib/ratelimit";
 
 // Define the shape of our return data
 // This helps TypeScript know what to expect
@@ -27,6 +30,32 @@ export async function generateCertificate(
   formData: FormData, // Form data submitted by user
 ): Promise<GenerateResult> {
   try {
+    // Wallet verification — check address is present and valid
+    const walletAddress = formData.get("walletAddress") as string;
+
+    if (!walletAddress || !isAddress(walletAddress)) {
+      return {
+        success: false,
+        error: "Please connect your wallet before generating a certificate.",
+      };
+    }
+    
+    // Rate limiting — get IP from request headers
+    const headersList = await headers();
+    const ip =
+      headersList.get("x-forwarded-for") ??
+      headersList.get("x-real-ip") ??
+      "anonymous";
+
+    const { success: allowed, remaining } = await generateRatelimit.limit(ip);
+
+    if (!allowed) {
+      return {
+        success: false,
+        error: `Too many requests. You can generate ${remaining} more certificates. Please wait an hour before trying again.`,
+      };
+    }
+
     // Extract form values
     const name = formData.get("name") as string; // User's name
     const certType = formData.get("certType") as string; // Certificate type

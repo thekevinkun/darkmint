@@ -55,7 +55,7 @@ const MintButton = ({ metadataUri, onMintSuccess }: MintButtonProps) => {
       // The CertificateMinted event is the first log emitted by our contract
       // tokenId is the second topic (index 1) in the log — it's hex encoded
       const log = receipt.logs[0];
-      const tokenId = log ? parseInt(log.topics[2] ?? "", 16) : 0;
+      const tokenId = log ? Number(BigInt(log.topics[2] ?? "")) : 0;
       onMintSuccess(hash, tokenId);
     }
   }, [isSuccess, hash, receipt]);

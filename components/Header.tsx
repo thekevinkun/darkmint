@@ -4,11 +4,13 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useAccount } from "wagmi";
 
 import { WalletConnect } from "@/components";
 
 const Header = () => {
   const pathname = usePathname();
+  const { isConnected } = useAccount();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => setMenuOpen((prev) => !prev);
@@ -68,20 +70,22 @@ const Header = () => {
             >
               How It Works
             </Link>
-            <Link
-              href="/my-nfts"
-              className={`header__nav-link ${
-                pathname === "/my-nfts" ? "header__nav-link--active" : ""
-              }`}
-              onClick={closeMenu}
-            >
-              My Certificates
-            </Link>
+            {isConnected && (
+              <Link
+                href="/my-nfts"
+                className={`header__nav-link ${
+                  pathname === "/my-nfts" ? "header__nav-link--active" : ""
+                }`}
+                onClick={closeMenu}
+              >
+                My Certificates
+              </Link>
+            )}
             <WalletConnect />
           </nav>
         </div>
       </header>
-      
+
       {/* Overlay — closes menu when clicking outside */}
       {menuOpen && <div className="header__overlay" onClick={closeMenu} />}
     </>

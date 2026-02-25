@@ -4,7 +4,9 @@
 // ============================================
 "use server";
 
-import { pinata } from "@/lib/pinata"; // Pinata client
+import { headers } from "next/headers";
+import { pinata } from "@/lib/pinata";
+import { uploadRatelimit } from "@/lib/ratelimit";
 
 // Define what we return from this function
 interface UploadResult {
@@ -21,6 +23,23 @@ export async function uploadToIPFS(
   skills: string, // Skills list
 ): Promise<UploadResult> {
   try {
+    // Rate limiting — get IP from request headers
+    const headersList = await headers();
+    const ip =
+      headersList.get("x-forwarded-for") ??
+      headersList.get("x-real-ip") ??
+      "anonymous";
+
+    const { success: allowed } = await uploadRatelimit.limit(ip);
+
+    if (!allowed) {
+      return {
+        success: false,
+        error:
+          "Too many upload attempts. Please wait an hour before trying again.",
+      };
+    }
+
     // ============================================
     // STEP 1: Download real image from the URL, pass through placeholders
     // OpenAI URLs expire after 1 hour — save to IPFS now!
