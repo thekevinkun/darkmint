@@ -12,7 +12,7 @@ import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/contract";
 
 interface MintButtonProps {
   metadataUri: string; // The ipfs://Qm...
-  onMintSuccess: (hash: string) => void; // Callback to pass tx hash back to parent
+  onMintSuccess: (hash: string, tokenId: number) => void; // Callback to pass tx hash back to parent
 }
 
 // MintButton Component
@@ -29,7 +29,11 @@ const MintButton = ({ metadataUri, onMintSuccess }: MintButtonProps) => {
   // useWaitForTransactionReceipt — waits for the tx to be confirmed
   // isConfirming = tx submitted but not yet mined
   // isSuccess = tx mined and confirmed!
-  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
+  const {
+    isLoading: isConfirming,
+    isSuccess,
+    data: receipt,
+  } = useWaitForTransactionReceipt({
     hash, // Watch this specific transaction
   });
 
@@ -47,10 +51,14 @@ const MintButton = ({ metadataUri, onMintSuccess }: MintButtonProps) => {
 
   // Notify parent when mint is confirmed
   useEffect(() => {
-    if (isSuccess && hash) {
-      onMintSuccess(hash);
+    if (isSuccess && hash && receipt) {
+      // The CertificateMinted event is the first log emitted by our contract
+      // tokenId is the second topic (index 1) in the log — it's hex encoded
+      const log = receipt.logs[0];
+      const tokenId = log ? parseInt(log.topics[2] ?? "", 16) : 0;
+      onMintSuccess(hash, tokenId);
     }
-  }, [isSuccess, hash]);
+  }, [isSuccess, hash, receipt]);
 
   // Wallet not connected
   if (!isConnected) {

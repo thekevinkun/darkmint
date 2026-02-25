@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useActionState } from "react";
+import Image from "next/image";
 import { generateCertificate } from "@/app/actions/generate-certificate";
 import { uploadToIPFS } from "@/app/actions/upload-to-ipfs";
 
@@ -45,6 +46,7 @@ const CertificateForm = () => {
 
   // Tx hash after mint
   const [mintTxHash, setMintTxHash] = useState<string | null>(null);
+  const [mintTokenId, setMintTokenId] = useState<number | null>(null);
 
   // Upload function — runs automatically after generation
   const handleUploadToIPFS = async () => {
@@ -350,10 +352,13 @@ const CertificateForm = () => {
 
               {/* Generated Image - MAIN FOCUS */}
               <div className="certificate-result__image-container">
-                <img
+                <Image
                   src={state.imageUrl ?? restoredImageUrl ?? ""}
                   alt="Generated certificate"
                   className="certificate-result__image"
+                  width={1024}
+                  height={1024}
+                  unoptimized
                 />
               </div>
 
@@ -401,19 +406,23 @@ const CertificateForm = () => {
                 <div style={{ marginTop: "1rem" }}>
                   <MintButton
                     metadataUri={metadataUri}
-                    onMintSuccess={(hash) => {
+                    onMintSuccess={(hash, tokenId) => {
                       setMintTxHash(hash);
-                      localStorage.removeItem("darkmint_pending"); // Mint done, no longer needed
+                      setMintTokenId(tokenId);
+                      localStorage.removeItem("darkmint_pending");
                     }}
                   />
                 </div>
               )}
 
-              <ShareButtons
-                recipientName={formValues.name}
-                certType={formValues.certType}
-                txHash={mintTxHash ?? undefined}
-              />
+              {mintTxHash && (
+                <ShareButtons
+                  recipientName={formValues.name}
+                  certType={formValues.certType}
+                  txHash={mintTxHash}
+                  tokenId={mintTokenId ?? undefined}
+                />
+              )}
 
               {/* Action buttons */}
               <div className="certificate-result__actions">

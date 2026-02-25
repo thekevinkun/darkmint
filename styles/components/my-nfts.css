@@ -86,7 +86,7 @@
 
 .nft-card__image {
   width: 100%;
-  height: 200px; /* Fixed height for consistent grid */
+  height: auto; /* Fixed height for consistent grid */
   object-fit: cover; /* Crop to fill */
   display: block;
 }

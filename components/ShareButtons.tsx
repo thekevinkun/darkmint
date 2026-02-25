@@ -6,19 +6,24 @@ interface ShareButtonsProps {
   recipientName: string;
   certType: string;
   txHash?: string;
+  tokenId?: number;
 }
 
 const ShareButtons = ({
   recipientName,
   certType,
   txHash,
+  tokenId,
 }: ShareButtonsProps) => {
   const [copied, setCopied] = useState(false); // Feedback when link is copied
 
   // The link we'll share — Etherscan tx if minted, otherwise DarkMint homepage
-  const shareUrl = txHash
-    ? `https://sepolia.etherscan.io/tx/${txHash}`
-    : "https://darkmint.vercel.app";
+  const shareUrl =
+    tokenId !== undefined
+      ? `https://darkmint.vercel.app/certificate/${tokenId}`
+      : txHash
+      ? `https://sepolia.etherscan.io/tx/${txHash}`
+      : "https://darkmint.vercel.app";
 
   // The text that appears in the tweet/post
   const shareText = `🎓 I just minted my ${certType} certificate as an NFT on @DarkMint!\n\nPowered by AI + Web3 🤖⛓️\n\n#DarkMint #Web3 #NFT #BlockchainCertificate`;

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useAccount } from "wagmi";
 import { Button } from "@/components";
 import { CONTRACT_ADDRESS } from "@/lib/contract";
@@ -169,10 +170,13 @@ const MyNFTs = () => {
           >
             {/* Certificate Image */}
             <div className="nft-card__image-container">
-              <img
+              <Image
                 src={nft.imageUrl}
                 alt={nft.metadata.name}
+                width={400}
+                height={400}
                 className="nft-card__image"
+                unoptimized
               />
               <div className="nft-card__token-badge">#{nft.tokenId}</div>
             </div>
@@ -196,6 +200,15 @@ const MyNFTs = () => {
                     </span>
                   ))}
               </div>
+
+              {/* View Certificate Link */}
+              <Link
+                href={`/certificate/${nft.tokenId}`}
+                className="nft-card__etherscan-link"
+                aria-label={`View certificate #${nft.tokenId}`}
+              >
+                View Certificate ↗
+              </Link>
 
               {/* Etherscan Link */}
               <Link

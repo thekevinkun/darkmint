@@ -6,9 +6,39 @@ import "./globals.css";
 
 // Metadata for the app (shows in browser tab and search engines)
 export const metadata: Metadata = {
-  title: "DarkMint - AI-Powered NFT Certificates", // Browser tab title
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
+  ),
+  title: {
+    template: "%s | DarkMint",
+    default: "DarkMint - AI-Powered NFT Certificates",
+  },
   description:
-    "Generate unique AI-powered certificate NFTs with dark cyberpunk aesthetic", // SEO description
+    "AI-Powered Web3 Certificate Minter. Generate and mint your certificates as NFTs on the blockchain.",
+  keywords: ["NFT", "Web3", "AI", "certificate", "blockchain", "DarkMint"],
+  authors: [{ name: "DarkMint" }],
+  openGraph: {
+    siteName: "DarkMint",
+    type: "website",
+    title: "DarkMint — AI-Powered NFT Certificates",
+    description:
+      "AI-Powered Web3 Certificate Minter. Generate and mint your certificates as NFTs on the blockchain.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "DarkMint — AI-Powered NFT Certificates",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "DarkMint — AI-Powered NFT Certificates",
+    description:
+      "AI-Powered Web3 Certificate Minter. Generate and mint your certificates as NFTs on the blockchain.",
+    images: ["/og-image.png"],
+  },
 };
 
 // Root layout component - wraps all pages
