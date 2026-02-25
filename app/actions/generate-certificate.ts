@@ -23,7 +23,7 @@ interface GenerateResult {
 // Calls OpenAI OR uses mock data based on flag
 // ============================================
 export async function generateCertificate(
-  prevState: any, // Previous form state (for useActionState)
+  prevState: Partial<GenerateResult>, // Previous form state (for useActionState)
   formData: FormData, // Form data submitted by user
 ): Promise<GenerateResult> {
   try {
@@ -191,7 +191,9 @@ async function generateWithMock(
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
 
   // Use a high-quality free placeholder image with purple/pink theme
-  const imageUrl = `https://placehold.co/1024x1024/1e2740/a855f7?text=${encodeURIComponent(certType + " Certificate")}&font=montserrat`;
+  const imageUrl = `https://placehold.co/1024x1024/1e2740/a855f7?text=${encodeURIComponent(
+    certType + " Certificate",
+  )}&font=montserrat`;
 
   console.log("✅ Mock certificate generated (free!)");
 

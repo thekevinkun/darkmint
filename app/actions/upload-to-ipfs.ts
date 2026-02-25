@@ -77,11 +77,12 @@ export async function uploadToIPFS(
       metadataUri, // Used in mintCertificate(address, metadataUri)
       imageUri, // Useful to display/verify
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const err = error as Error;
     console.error("❌ IPFS upload failed:", error);
     // Try to extract clean message from nested Pinata auth errors
 
-    const rawMessage = error?.message || "";
+    const rawMessage = err?.message || "";
     const match = rawMessage.match(/"message":"([^"]+)"/);
     const cleanMessage = match
       ? match[1]

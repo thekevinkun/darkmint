@@ -8,6 +8,21 @@ import { Button, ShareButtons } from "@/components";
 
 import { CONTRACT_ADDRESS } from "@/lib/contract";
 
+// Shape of each NFT from Alchemy API
+interface AlchemyNFT {
+  tokenId: string;
+  name?: string;
+  description?: string;
+  image?: {
+    originalUrl?: string;
+  };
+  raw?: {
+    metadata?: {
+      attributes?: { trait_type: string; value: string }[];
+    };
+  };
+}
+
 // Shape of each NFT's metadata from IPFS
 interface NFTMetadata {
   name: string;
@@ -62,7 +77,7 @@ const MyNFTs = () => {
       const data = await res.json();
       const ownedNfts = data.ownedNfts ?? [];
 
-      const cards: NFTCard[] = ownedNfts.map((nft: any) => {
+      const cards: NFTCard[] = ownedNfts.map((nft: AlchemyNFT) => {
         const tokenId = Number(nft.tokenId);
 
         // Alchemy already fetches and parses the metadata for us
@@ -79,7 +94,7 @@ const MyNFTs = () => {
       });
 
       setNftCards(cards);
-    } catch (err: any) {
+    } catch (err) {
       console.error("❌ Failed to load NFTs:", err);
       setError("Failed to load your certificates. Please try again.");
     } finally {
