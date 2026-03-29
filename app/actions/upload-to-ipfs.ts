@@ -16,6 +16,14 @@ interface UploadResult {
   error?: string;
 }
 
+// Turn certificate details into a safe filename for Pinata.
+const toSafeFilename = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80);
+
 export async function uploadToIPFS(
   imageUrl: string, // Temporary OpenAI/placeholder URL
   name: string, // Certificate recipient name
@@ -44,6 +52,9 @@ export async function uploadToIPFS(
     // STEP 1: Download real image from the URL, pass through placeholders
     // OpenAI URLs expire after 1 hour — save to IPFS now!
     let imageUri: string;
+    // Build readable Pinata filenames from the recipient and certificate type.
+    const fileBaseName =
+      toSafeFilename(`${name}-${certType}-certificate`) || "darkmint-certificate";
 
     const isPlaceholder = imageUrl.includes("placehold.co");
 
@@ -55,12 +66,16 @@ export async function uploadToIPFS(
       console.log("📥 Downloading image from URL...");
       const imageResponse = await fetch(imageUrl);
       const imageBlob = await imageResponse.blob();
-      const imageFile = new File([imageBlob], "certificate.png", {
+      // Give the uploaded image a specific filename instead of certificate.png.
+      const imageFile = new File([imageBlob], `${fileBaseName}.png`, {
         type: "image/png",
       });
 
       console.log("📤 Uploading image to IPFS...");
-      const imageUpload = await pinata.upload.public.file(imageFile);
+      // Save a human-friendly name in the Pinata dashboard.
+      const imageUpload = await pinata.upload.public
+        .file(imageFile)
+        .name(`${fileBaseName}.png`);
       imageUri = `ipfs://${imageUpload.cid}`;
       console.log("✅ Image uploaded:", imageUri);
     }
@@ -84,7 +99,10 @@ export async function uploadToIPFS(
 
     // STEP 4: Upload metadata JSON to IPFS
     console.log("📤 Uploading metadata to IPFS...");
-    const metadataUpload = await pinata.upload.public.json(metadata);
+    // Give the metadata file a readable name instead of data.json.
+    const metadataUpload = await pinata.upload.public
+      .json(metadata)
+      .name(`${fileBaseName}.json`);
     const metadataUri = `ipfs://${metadataUpload.cid}`; // This is what gets minted!
     console.log("✅ Metadata uploaded:", metadataUri);
 
