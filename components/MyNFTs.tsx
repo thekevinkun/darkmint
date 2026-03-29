@@ -146,7 +146,7 @@ const MyNFTs = () => {
         <div className="my-nfts__empty-icon">🎓</div>
         <h2>No Certificates Yet</h2>
         <p>You haven't minted any certificates yet.</p>
-        <Link href="/" className="btn-primary">
+        <Link href="/" className="btn btn-primary">
           ✨ Create Your First Certificate
         </Link>
       </div>
