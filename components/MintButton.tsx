@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
+import { decodeEventLog } from "viem";
 import {
   useAccount,
   useWriteContract,
@@ -23,6 +24,8 @@ interface MintButtonProps {
 const MintButton = ({ metadataUri, onMintSuccess }: MintButtonProps) => {
   // Get the connected wallet address
   const { address, isConnected } = useAccount();
+  // Remember the last completed mint so we do not report it twice.
+  const reportedHashRef = useRef<string | null>(null);
 
   // useWriteContract — sends a transaction to the blockchain
   // data = the transaction hash once submitted
@@ -54,13 +57,42 @@ const MintButton = ({ metadataUri, onMintSuccess }: MintButtonProps) => {
   // Notify parent when mint is confirmed
   useEffect(() => {
     if (isSuccess && hash && receipt) {
-      // The CertificateMinted event is the first log emitted by our contract
-      // tokenId is the second topic (index 1) in the log — it's hex encoded
-      const log = receipt.logs[0];
-      const tokenId = log ? Number(BigInt(log.topics[2] ?? "")) : 0;
+      // Stop here if this transaction was already handled once.
+      if (reportedHashRef.current === hash) return;
+
+      // Decode each contract log until we find CertificateMinted.
+      const decodedLog =
+        receipt.logs
+          .filter(
+            (log) =>
+              log.address.toLowerCase() === CONTRACT_ADDRESS.toLowerCase(),
+          )
+          .map((log) => {
+            // Skip logs that are not part of our ABI.
+            try {
+              return decodeEventLog({
+                abi: CONTRACT_ABI,
+                data: log.data,
+                topics: log.topics,
+              });
+            } catch {
+              return null;
+            }
+          })
+          .find((log) => log?.eventName === "CertificateMinted") ?? null;
+
+      // Turn the blockchain bigint into a normal number for the UI.
+      const tokenId =
+        decodedLog?.eventName === "CertificateMinted"
+          ? Number(decodedLog.args.tokenId)
+          : 0;
+
+      // Send the clean tokenId back to the parent component.
       onMintSuccess(hash, tokenId);
+      // Save this hash so a re-render does not trigger the callback again.
+      reportedHashRef.current = hash;
     }
-  }, [isSuccess, hash, receipt]);
+  }, [isSuccess, hash, onMintSuccess, receipt]);
 
   // Wallet not connected
   if (!isConnected) {

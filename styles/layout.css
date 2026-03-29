@@ -288,6 +288,10 @@
     padding: var(--space-2xl) 0; /* Less vertical padding */
   }
 
+  .section-page {
+    padding: var(--space-xl) 0; /* Less section padding */
+  }
+
   .section {
     padding: var(--space-2xl) 0; /* Less section padding */
   }

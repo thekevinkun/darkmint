@@ -11,11 +11,15 @@ interface AlchemyNFT {
   tokenId: string;
   name?: string;
   description?: string;
+  // Read the full certificate text from NFT metadata.
+  certificateText?: string;
   image?: {
     originalUrl?: string;
   };
   raw?: {
     metadata?: {
+      // Read custom metadata fields that are not part of the standard NFT shape.
+      certificateText?: string;
       attributes?: { trait_type: string; value: string }[];
     };
   };
@@ -25,6 +29,8 @@ export interface NFTResult {
   tokenId: number;
   name: string;
   description: string;
+  // Return the full certificate text to the UI.
+  certificateText: string;
   image: string;
   attributes: { trait_type: string; value: string }[];
 }
@@ -59,6 +65,9 @@ export async function getNFTs(address: string): Promise<{
         tokenId,
         name: nft.name ?? `DarkMint Certificate #${tokenId}`,
         description: nft.description ?? "",
+        // Use the stored certificate text from any metadata shape Alchemy returns.
+        certificateText:
+          nft.certificateText ?? nft.raw?.metadata?.certificateText ?? "",
         image: nft.image?.originalUrl ?? "",
         attributes: nft.raw?.metadata?.attributes ?? [],
       };

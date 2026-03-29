@@ -66,6 +66,8 @@ const CertificateForm = () => {
       formValues.name,
       formValues.certType,
       formValues.skills,
+      // Save the AI-written certificate text into NFT metadata.
+      state.certificateText,
     );
 
     setIsUploading(false);
@@ -523,8 +525,8 @@ const CertificateForm = () => {
                       fontSize: "0.875rem",
                     }}
                   >
-                    Fill out the form and click "Generate Certificate" to see
-                    your AI-powered NFT certificate
+                    Fill out the form and click &quot;Generate Certificate&quot;
+                    to see your AI-powered NFT certificate
                   </p>
                 </div>
               </div>

@@ -10,25 +10,12 @@ import { Button, ShareButtons } from "@/components";
 
 import { CONTRACT_ADDRESS } from "@/lib/contract";
 
-// Shape of each NFT from Alchemy API
-interface AlchemyNFT {
-  tokenId: string;
-  name?: string;
-  description?: string;
-  image?: {
-    originalUrl?: string;
-  };
-  raw?: {
-    metadata?: {
-      attributes?: { trait_type: string; value: string }[];
-    };
-  };
-}
-
 // Shape of each NFT's metadata from IPFS
 interface NFTMetadata {
   name: string;
   description: string;
+  // Keep the full certificate wording for later viewing.
+  certificateText: string;
   image: string; // ipfs://Qm... or placehold.co URL
   attributes: { trait_type: string; value: string }[];
 }
@@ -51,19 +38,27 @@ const ipfsToHttp = (uri: string): string => {
   return uri; // Already an HTTP URL (mock mode)
 };
 
+// Pull a short label value from the NFT attributes.
+const getAttributeValue = (
+  attributes: { trait_type: string; value: string }[],
+  traitType: string,
+) => attributes.find((attribute) => attribute.trait_type === traitType)?.value ?? "";
+
+// Trim long certificate text so the list stays easy to scan.
+const getCertificatePreview = (certificateText: string) => {
+  const cleanText = certificateText.replace(/\s+/g, " ").trim();
+  return cleanText.length > 220
+    ? `${cleanText.slice(0, 220).trim()}...`
+    : cleanText;
+};
+
 const MyNFTs = () => {
   const { address, isConnected } = useAccount(); // Get connected wallet
   const [nftCards, setNftCards] = useState<NFTCard[]>([]); // Loaded NFT cards
   const [isLoading, setIsLoading] = useState(false); // Loading state
   const [error, setError] = useState<string | null>(null); // Error state
 
-  // Trigger NFT load when wallet connects
-  useEffect(() => {
-    if (!address || !isConnected) return;
-    loadNFTs(address);
-  }, [address, isConnected]);
-
-  // Fetches all CertificateMinted events for this wallet
+  // Load each NFT and keep the saved certificate text with it.
   const loadNFTs = async (address: string) => {
     setIsLoading(true);
     setError(null);
@@ -81,6 +76,8 @@ const MyNFTs = () => {
       metadata: {
         name: nft.name,
         description: nft.description,
+        // Pass the saved certificate text into each card.
+        certificateText: nft.certificateText,
         image: nft.image,
         attributes: nft.attributes,
       },
@@ -90,6 +87,19 @@ const MyNFTs = () => {
     setNftCards(cards);
     setIsLoading(false);
   };
+
+  // Trigger NFT load when wallet connects
+  useEffect(() => {
+    if (!address || !isConnected) return;
+
+    // Defer the first state update until after this effect finishes.
+    const timer = window.setTimeout(() => {
+      void loadNFTs(address);
+    }, 0);
+
+    // Clear the pending load if the wallet changes quickly.
+    return () => window.clearTimeout(timer);
+  }, [address, isConnected]);
 
   // NOT CONNECTED STATE
   if (!isConnected) {
@@ -109,14 +119,17 @@ const MyNFTs = () => {
         <h1 style={{ marginBottom: "2rem" }} className="my-nfts__title">
           My Certificates
         </h1>
-        <div className="my-nfts__grid">
+        <div className="my-nfts__list">
           {/* Skeleton cards while loading */}
           {[1, 2, 3].map((i) => (
             <div key={i} className="nft-card nft-card--skeleton">
-              <div className="nft-card__image-skeleton" />
+              <div className="nft-card__image-shell">
+                <div className="nft-card__image-skeleton" />
+              </div>
               <div className="nft-card__body">
                 <div className="nft-card__title-skeleton" />
                 <div className="nft-card__text-skeleton" />
+                <div className="nft-card__text-skeleton nft-card__text-skeleton--long" />
               </div>
             </div>
           ))}
@@ -145,7 +158,7 @@ const MyNFTs = () => {
       <div className="my-nfts__empty">
         <div className="my-nfts__empty-icon">🎓</div>
         <h2>No Certificates Yet</h2>
-        <p>You haven't minted any certificates yet.</p>
+        <p>You haven&apos;t minted any certificates yet.</p>
         <Link href="/" className="btn btn-primary">
           ✨ Create Your First Certificate
         </Link>
@@ -153,7 +166,7 @@ const MyNFTs = () => {
     );
   }
 
-  // NFT GRID — Show all certificates
+  // NFT LIST — Show all certificates in a readable layout
   return (
     <div className="my-nfts">
       <h1 className="my-nfts__title">My Certificates</h1>
@@ -162,7 +175,7 @@ const MyNFTs = () => {
       </p>
 
       <div
-        className="my-nfts__grid"
+        className="my-nfts__list"
         role="list"
         aria-label="Your minted certificates"
       >
@@ -174,26 +187,53 @@ const MyNFTs = () => {
             aria-label={`Certificate #${nft.tokenId}: ${nft.metadata.name}`}
           >
             {/* Certificate Image */}
-            <div className="nft-card__image-container">
-              <Image
-                src={nft.imageUrl}
-                alt={nft.metadata.name}
-                width={400}
-                height={400}
-                className="nft-card__image"
-                unoptimized
-              />
-              <div className="nft-card__token-badge">#{nft.tokenId}</div>
+            <div className="nft-card__image-shell">
+              <div className="nft-card__image-container">
+                <Image
+                  src={nft.imageUrl}
+                  alt={nft.metadata.name}
+                  width={400}
+                  height={400}
+                  className="nft-card__image"
+                  unoptimized
+                />
+                <div className="nft-card__token-badge">#{nft.tokenId}</div>
+              </div>
             </div>
 
             {/* Card Body */}
             <div className="nft-card__body">
-              <h3 className="nft-card__title">{nft.metadata.name}</h3>
+              <div className="nft-card__header">
+                <div>
+                  <h3 className="nft-card__title">{nft.metadata.name}</h3>
+                  <p className="nft-card__meta">
+                    {/* Show the main certificate facts near the title. */}
+                    {getAttributeValue(
+                      nft.metadata.attributes,
+                      "Certificate Type",
+                    )}
+                    {" • "}
+                    {getAttributeValue(nft.metadata.attributes, "Recipient")}
+                  </p>
+                </div>
+                <Link
+                  href={`/certificate/${nft.tokenId}`}
+                  className="nft-card__primary-link"
+                  aria-label={`View certificate #${nft.tokenId}`}
+                >
+                  View Certificate ↗
+                </Link>
+              </div>
 
-              {/* Attributes */}
+              {/* Keep the attribute badges short so the row stays compact. */}
               <div className="nft-card__attributes">
                 {nft.metadata.attributes
-                  .filter((a) => a.trait_type !== "Skills") // Skills is too long for a badge
+                  .filter(
+                    (attribute) =>
+                      !["Skills", "Recipient", "Certificate Type"].includes(
+                        attribute.trait_type,
+                      ),
+                  )
                   .map((attr) => (
                     <span key={attr.trait_type} className="nft-card__badge">
                       <span className="nft-card__badge-label">
@@ -206,39 +246,38 @@ const MyNFTs = () => {
                   ))}
               </div>
 
-              {/* View Certificate Link */}
-              <Link
-                href={`/certificate/${nft.tokenId}`}
-                className="nft-card__etherscan-link"
-                aria-label={`View certificate #${nft.tokenId}`}
-              >
-                View Certificate ↗
-              </Link>
+              {nft.metadata.certificateText && (
+                <div className="nft-card__preview">
+                  {/* Show a short preview instead of the full certificate text. */}
+                  <p>{getCertificatePreview(nft.metadata.certificateText)}</p>
+                </div>
+              )}
 
-              {/* Etherscan Link */}
-              <Link
-                href={`https://sepolia.etherscan.io/token/${CONTRACT_ADDRESS}?a=${nft.tokenId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="nft-card__etherscan-link"
-                aria-label={`View token #${nft.tokenId} on Etherscan`}
-              >
-                View on Etherscan ↗
-              </Link>
+              <div className="nft-card__footer">
+                <Link
+                  href={`https://sepolia.etherscan.io/token/${CONTRACT_ADDRESS}?a=${nft.tokenId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="nft-card__etherscan-link"
+                  aria-label={`View token #${nft.tokenId} on Etherscan`}
+                >
+                  View on Etherscan ↗
+                </Link>
 
-              <ShareButtons
-                recipientName={
-                  nft.metadata.attributes.find(
-                    (a) => a.trait_type === "Recipient",
-                  )?.value ?? ""
-                }
-                certType={
-                  nft.metadata.attributes.find(
-                    (a) => a.trait_type === "Certificate Type",
-                  )?.value ?? ""
-                }
-                tokenId={nft.tokenId}
-              />
+                <div className="nft-card__share">
+                  <ShareButtons
+                    recipientName={getAttributeValue(
+                      nft.metadata.attributes,
+                      "Recipient",
+                    )}
+                    certType={getAttributeValue(
+                      nft.metadata.attributes,
+                      "Certificate Type",
+                    )}
+                    tokenId={nft.tokenId}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         ))}

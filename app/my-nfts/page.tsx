@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 export default function MyNFTsPage() {
   return (
-    <main id="main-content" className="main">
+    <main className="section-page">
       <div className="container">
         <MyNFTs />
       </div>

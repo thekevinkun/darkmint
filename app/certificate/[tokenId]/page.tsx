@@ -6,8 +6,8 @@ import { Certificate } from "@/components";
 
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/contract";
 
-// Fetch token metadata server-side for Open Graph
-async function getTokenMetadata(tokenId: string) {
+// Load both metadata and owner for the public certificate page.
+async function getTokenDetails(tokenId: string) {
   try {
     const client = createPublicClient({
       chain: sepolia,
@@ -22,6 +22,13 @@ async function getTokenMetadata(tokenId: string) {
       functionName: "tokenURI",
       args: [BigInt(tokenId)],
     })) as string;
+    // Read the wallet that currently owns this certificate.
+    const ownerAddress = (await client.readContract({
+      address: CONTRACT_ADDRESS as `0x${string}`,
+      abi: CONTRACT_ABI,
+      functionName: "ownerOf",
+      args: [BigInt(tokenId)],
+    })) as string;
 
     if (!uri) return null;
 
@@ -32,7 +39,11 @@ async function getTokenMetadata(tokenId: string) {
     );
     const res = await fetch(gatewayUrl);
     if (!res.ok) return null;
-    return await res.json();
+    // Return all page data together so the UI can check ownership.
+    return {
+      metadata: await res.json(),
+      ownerAddress,
+    };
   } catch {
     // Contract throws when tokenId doesn't exist
     return null;
@@ -45,7 +56,8 @@ export async function generateMetadata({
   params: Promise<{ tokenId: string }>;
 }) {
   const { tokenId } = await params;
-  const metadata = await getTokenMetadata(tokenId);
+  const tokenDetails = await getTokenDetails(tokenId);
+  const metadata = tokenDetails?.metadata;
 
   const title = `${metadata?.name ?? `Certificate #${tokenId}`} | DarkMint`;
   const description =
@@ -87,10 +99,11 @@ export default async function CertificatePage({
   }
 
   // IF token doesn't exist on blockchain — show 404
-  const metadata = await getTokenMetadata(tokenId);
-  if (!metadata) {
+  const tokenDetails = await getTokenDetails(tokenId);
+  if (!tokenDetails) {
     notFound();
   }
+  const { metadata, ownerAddress } = tokenDetails;
 
   const imageUrl = metadata?.image?.replace(
     "ipfs://",
@@ -102,6 +115,7 @@ export default async function CertificatePage({
       tokenId={tokenId}
       metadata={metadata}
       imageUrl={imageUrl ?? null}
+      ownerAddress={ownerAddress ?? null}
     />
   );
 }

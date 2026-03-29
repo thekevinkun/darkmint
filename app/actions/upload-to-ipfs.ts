@@ -21,6 +21,7 @@ export async function uploadToIPFS(
   name: string, // Certificate recipient name
   certType: string, // Certificate type
   skills: string, // Skills list
+  certificateText: string, // Full AI certificate text
 ): Promise<UploadResult> {
   try {
     // Rate limiting — get IP from request headers
@@ -70,6 +71,8 @@ export async function uploadToIPFS(
       name: `${certType} Certificate — ${name}`,
       description: `This certificate recognizes ${name} for their expertise in ${certType}. Skills: ${skills}`,
       image: imageUri, // Points to IPFS image (not a temp URL!)
+      // Store the full certificate text so it can be shown again later.
+      certificateText,
       attributes: [
         { trait_type: "Certificate Type", value: certType },
         { trait_type: "Recipient", value: name },

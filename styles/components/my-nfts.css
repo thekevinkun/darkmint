@@ -1,44 +1,40 @@
-/* 
+/*
   My NFTs Page Styles
-  Grid layout for certificate NFT cards
- */
+  List layout for readable certificate browsing
+*/
 
-/* Page wrapper */
+/* Add breathing room around the page content. */
 .my-nfts {
-  padding: var(--space-3xl) 0; /* Top and bottom breathing room */
+  padding: var(--space-3xl) 0;
 }
 
-/* Page title */
+/* Keep the page title centered and easy to spot. */
 .my-nfts__title {
-  font-size: 2rem; /* Large heading */
-  background: var(--gradient-cyber); /* Purple-pink gradient */
+  font-size: 2rem;
+  background: var(--gradient-cyber);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: var(--space-sm); /* Tight gap before subtitle */
+  margin-bottom: var(--space-sm);
   text-align: center;
 }
 
-/* Subtitle — "X certificates minted" */
+/* Use a muted subtitle under the title. */
 .my-nfts__subtitle {
   text-align: center;
-  color: #9ca3af; /* Muted gray */
-  margin-bottom: var(--space-2xl); /* Space before grid */
+  color: #9ca3af;
+  margin-bottom: var(--space-2xl);
 }
 
-/* Responsive card grid */
-.my-nfts__grid {
+/* Stack NFTs vertically so long content stays readable. */
+.my-nfts__list {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(280px, 1fr)
-  ); /* Auto responsive */
-  gap: var(--space-xl); /* Space between cards */
+  gap: var(--space-xl);
 }
 
-/* 
+/*
   Empty / Error / Not-connected States
- */
+*/
 .my-nfts__empty {
   display: flex;
   flex-direction: column;
@@ -46,12 +42,12 @@
   justify-content: center;
   text-align: center;
   padding: var(--space-3xl) var(--space-xl);
-  min-height: 400px; /* Prevent layout collapse */
+  min-height: 400px;
   gap: var(--space-md);
 }
 
 .my-nfts__empty-icon {
-  font-size: 4rem; /* Big emoji icon */
+  font-size: 4rem;
   margin-bottom: var(--space-sm);
 }
 
@@ -65,39 +61,50 @@
   max-width: 400px;
 }
 
-/* 
+/*
   NFT Card
- */
+*/
 .nft-card {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden; /* Clip image corners */
-  transition: transform var(--transition-base); /* Hover lift */
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+  gap: var(--space-xl);
+  align-items: start;
+  overflow: hidden;
+  transition:
+    transform var(--transition-base),
+    border-color var(--transition-base);
 }
 
 .nft-card:hover {
-  transform: translateY(-4px); /* Subtle lift on hover */
+  transform: translateY(-4px);
 }
 
-/* Image container with token badge overlay */
+/* Keep the artwork column at a stable width. */
+.nft-card__image-shell {
+  width: 100%;
+}
+
+/* Let the token badge sit on top of the image. */
 .nft-card__image-container {
-  position: relative; /* For badge positioning */
+  position: relative;
 }
 
 .nft-card__image {
   width: 100%;
-  height: auto; /* Fixed height for consistent grid */
-  object-fit: cover; /* Crop to fill */
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
   display: block;
+  border-radius: var(--radius-lg);
 }
 
-/* Token ID badge — top right corner */
+/* Show the token number without taking extra row space. */
 .nft-card__token-badge {
   position: absolute;
   top: var(--space-sm);
   right: var(--space-sm);
-  background: rgba(0, 0, 0, 0.7); /* Semi-transparent dark */
-  color: #a855f7; /* Purple text */
+  background: rgba(0, 0, 0, 0.7);
+  color: #a855f7;
   font-size: 0.75rem;
   font-weight: 700;
   padding: 2px 8px;
@@ -105,28 +112,60 @@
   border: 1px solid rgba(168, 85, 247, 0.4);
 }
 
-/* Card body — text content */
+/* Organize the text side into clear content sections. */
 .nft-card__body {
-  padding: var(--space-lg);
+  min-width: 0;
   display: grid;
-  grid-template-rows: 3rem auto auto; /* title | attributes | etherscan */
   gap: var(--space-md);
-  flex: 1;
+  align-content: start;
+}
+
+/* Put the title and main action on the same row when space allows. */
+.nft-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-md);
 }
 
 .nft-card__title {
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   color: #e5e7eb;
   font-weight: 600;
-  line-height: 1.4;
-  display: -webkit-box; /* Enable line clamping */
-  -webkit-line-clamp: 2; /* Max 2 lines */
-  -webkit-box-orient: vertical;
-  overflow: hidden; /* Hide anything beyond 2 lines */
-  align-self: start; /* Sit at top of its grid row */
+  line-height: 1.35;
+  margin-bottom: 0;
 }
 
-/* Attribute badges row */
+/* Show key certificate facts under the title. */
+.nft-card__meta {
+  margin-top: var(--space-xs);
+  margin-bottom: 0;
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+/* Make the main action look stronger than the utility links. */
+.nft-card__primary-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  background: rgba(168, 85, 247, 0.12);
+  color: #e9d5ff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.nft-card__primary-link:hover {
+  text-decoration: none;
+  background: rgba(168, 85, 247, 0.18);
+  border-color: rgba(255, 0, 255, 0.4);
+}
+
+/* Keep the trait badges compact and readable. */
 .nft-card__attributes {
   display: flex;
   flex-wrap: wrap;
@@ -136,47 +175,82 @@
 .nft-card__badge {
   display: flex;
   flex-direction: column;
-  background: rgba(168, 85, 247, 0.1); /* Purple tint */
+  background: rgba(168, 85, 247, 0.1);
   border: 1px solid rgba(168, 85, 247, 0.2);
   border-radius: var(--radius-sm);
   padding: 4px 8px;
-  font-size: 0.7rem;
+  font-size: 0.72rem;
 }
 
 .nft-card__badge-label {
-  color: #a855f7; /* Purple label */
+  color: #a855f7;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .nft-card__badge-value {
-  color: #e5e7eb; /* Light value */
+  color: #e5e7eb;
 }
 
-/* Etherscan link at bottom of card */
+/* Show only a short preview instead of the full certificate body. */
+.nft-card__preview {
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(168, 85, 247, 0.15);
+}
+
+.nft-card__preview p {
+  margin-bottom: 0;
+  color: rgba(229, 231, 235, 0.82);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+/* Keep utility actions grouped near the bottom. */
+.nft-card__footer {
+  display: grid;
+  gap: var(--space-md);
+}
+
 .nft-card__etherscan-link {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: #a855f7;
   text-decoration: none;
-  margin-top: auto; /* Push to bottom */
   transition: color var(--transition-fast);
 }
 
 .nft-card__etherscan-link:hover {
-  color: #ff00ff; /* Magenta on hover */
+  color: #ff00ff;
 }
 
-/* 
+/* Limit the share area so it does not dominate the card. */
+.nft-card__share .share-buttons {
+  margin-top: 0;
+  padding-top: var(--space-md);
+}
+
+.nft-card__share .share-buttons__label {
+  text-align: left;
+  margin-bottom: var(--space-sm);
+}
+
+.nft-card__share .share-buttons__row {
+  justify-content: flex-start;
+}
+
+/*
   Skeleton Loading Cards
- */
+*/
 .nft-card--skeleton {
-  pointer-events: none; /* Not clickable */
+  pointer-events: none;
 }
 
 .nft-card__image-skeleton {
   width: 100%;
-  height: 200px;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-lg);
   background: linear-gradient(
     90deg,
     var(--bg-tertiary) 25%,
@@ -184,12 +258,12 @@
     var(--bg-tertiary) 75%
   );
   background-size: 200% 100%;
-  animation: shimmer 1.5s infinite; /* Shimmer effect */
+  animation: shimmer 1.5s infinite;
 }
 
 .nft-card__title-skeleton {
-  height: 16px;
-  width: 80%;
+  height: 18px;
+  width: 65%;
   border-radius: var(--radius-sm);
   background: linear-gradient(
     90deg,
@@ -203,7 +277,7 @@
 
 .nft-card__text-skeleton {
   height: 12px;
-  width: 60%;
+  width: 40%;
   border-radius: var(--radius-sm);
   background: linear-gradient(
     90deg,
@@ -212,7 +286,52 @@
     var(--bg-tertiary) 75%
   );
   background-size: 200% 100%;
-  animation: shimmer 1.5s infinite 0.2s; /* Slight delay for stagger */
+  animation: shimmer 1.5s infinite 0.2s;
+}
+
+/* Add a longer skeleton line to mimic the preview text. */
+.nft-card__text-skeleton--long {
+  width: 92%;
+}
+
+/* Collapse to one column on tablets and phones. */
+@media (max-width: 960px) {
+  .nft-card {
+    grid-template-columns: 1fr;
+  }
+
+  .nft-card__image-shell {
+    max-width: 360px;
+  }
+}
+
+/* Simplify the header and controls on smaller screens. */
+@media (max-width: 640px) {
+  .my-nfts {
+    padding: var(--space-2xl) 0;
+  }
+
+  .nft-card {
+    gap: var(--space-lg);
+  }
+
+  .nft-card__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nft-card__primary-link {
+    width: 100%;
+  }
+
+  .nft-card__share .share-buttons__row {
+    justify-content: stretch;
+  }
+
+  .nft-card__share .share-btn {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
 }
 
 @keyframes shimmer {

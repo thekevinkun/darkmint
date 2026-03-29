@@ -7,6 +7,7 @@ interface ShareButtonsProps {
   certType: string;
   txHash?: string;
   tokenId?: number;
+  shareMode?: "owner" | "public";
 }
 
 const ShareButtons = ({
@@ -14,6 +15,7 @@ const ShareButtons = ({
   certType,
   txHash,
   tokenId,
+  shareMode = "owner",
 }: ShareButtonsProps) => {
   const [copied, setCopied] = useState(false); // Feedback when link is copied
 
@@ -25,8 +27,11 @@ const ShareButtons = ({
       ? `https://sepolia.etherscan.io/tx/${txHash}`
       : "https://darkmint-web.vercel.app";
 
-  // The text that appears in the tweet/post
-  const shareText = `🎓 I just minted my ${certType} certificate as an NFT on @DarkMint!\n\n${shareUrl}\n\n#DarkMint #Web3 #NFT #BlockchainCertificate`;
+  // Use first-person text only when the owner is sharing.
+  const shareText =
+    shareMode === "owner"
+      ? `🎓 I just minted my ${certType} certificate as an NFT on @DarkMint!\n\n${shareUrl}\n\n#DarkMint #Web3 #NFT #BlockchainCertificate`
+      : `🎓 Check out ${recipientName}'s ${certType} certificate on DarkMint.\n\n${shareUrl}\n\n#DarkMint #Web3 #NFT #BlockchainCertificate`;
 
   // X (Twitter) Share
   const handleXShare = () => {
@@ -65,28 +70,36 @@ const ShareButtons = ({
 
   return (
     <div className="share-buttons">
-      <p className="share-buttons__label">🎉 Share your achievement</p>
+      <p className="share-buttons__label">
+        {shareMode === "owner"
+          ? "🎉 Share your achievement"
+          : "🔗 Copy this certificate link"}
+      </p>
 
       <div className="share-buttons__row">
-        {/* X (Twitter) */}
-        <button
-          onClick={handleXShare}
-          className="share-btn share-btn--x"
-          aria-label="Share on X (Twitter)"
-        >
-          <span className="share-btn__icon">𝕏</span>
-          <span className="share-btn__text">Share on X</span>
-        </button>
+        {shareMode === "owner" && (
+          <>
+            {/* Let the owner share the certificate on X. */}
+            <button
+              onClick={handleXShare}
+              className="share-btn share-btn--x"
+              aria-label="Share on X (Twitter)"
+            >
+              <span className="share-btn__icon">𝕏</span>
+              <span className="share-btn__text">Share on X</span>
+            </button>
 
-        {/* LinkedIn */}
-        <button
-          onClick={handleLinkedInShare}
-          className="share-btn share-btn--linkedin"
-          aria-label="Share on LinkedIn"
-        >
-          <span className="share-btn__icon">in</span>
-          <span className="share-btn__text">LinkedIn</span>
-        </button>
+            {/* Let the owner share the certificate on LinkedIn. */}
+            <button
+              onClick={handleLinkedInShare}
+              className="share-btn share-btn--linkedin"
+              aria-label="Share on LinkedIn"
+            >
+              <span className="share-btn__icon">in</span>
+              <span className="share-btn__text">LinkedIn</span>
+            </button>
+          </>
+        )}
 
         {/* Copy Link */}
         <button
