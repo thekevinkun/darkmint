@@ -18,14 +18,17 @@ const ShareButtons = ({
   shareMode = "owner",
 }: ShareButtonsProps) => {
   const [copied, setCopied] = useState(false); // Feedback when link is copied
+  // Use the configured app URL so social links point to the live site.
+  const appUrl =
+    process.env.NEXT_PUBLIC_APP_URL ?? "https://darkmint-web.vercel.app";
 
   // The link we'll share — Etherscan tx if minted, otherwise DarkMint homepage
   const shareUrl =
     tokenId !== undefined
-      ? `https://darkmint-web.vercel.app/certificate/${tokenId}`
+      ? `${appUrl}/certificate/${tokenId}`
       : txHash
       ? `https://sepolia.etherscan.io/tx/${txHash}`
-      : "https://darkmint-web.vercel.app";
+      : appUrl;
 
   // Use first-person text only when the owner is sharing.
   const shareText =
@@ -33,8 +36,21 @@ const ShareButtons = ({
       ? `🎓 I just minted my ${certType} certificate as an NFT on @DarkMint!\n\n${shareUrl}\n\n#DarkMint #Web3 #NFT #BlockchainCertificate`
       : `🎓 Check out ${recipientName}'s ${certType} certificate on DarkMint.\n\n${shareUrl}\n\n#DarkMint #Web3 #NFT #BlockchainCertificate`;
 
+  // Warm the certificate page so social crawlers can read the OG image faster.
+  const warmCertificatePage = async () => {
+    if (tokenId === undefined) return;
+
+    try {
+      await fetch(`${shareUrl}?previewWarm=1`, { cache: "no-store" });
+    } catch {
+      // Ignore warmup errors because sharing should still continue.
+    }
+  };
+
   // X (Twitter) Share
-  const handleXShare = () => {
+  const handleXShare = async () => {
+    // Trigger the certificate route once before opening the share dialog.
+    await warmCertificatePage();
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
       shareText,
     )}`;
@@ -42,7 +58,9 @@ const ShareButtons = ({
   };
 
   // LinkedIn Share
-  const handleLinkedInShare = () => {
+  const handleLinkedInShare = async () => {
+    // Trigger the certificate route once before opening the share dialog.
+    await warmCertificatePage();
     const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
       shareUrl,
     )}`;

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { unstable_noStore as noStore } from "next/cache";
 import { createPublicClient, http } from "viem";
 import { sepolia } from "viem/chains";
 
@@ -6,9 +7,18 @@ import { Certificate } from "@/components";
 
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/contract";
 
+// Always render certificate metadata fresh for social crawlers.
+export const dynamic = "force-dynamic";
+
+// Disable route-level caching so new mints can preview immediately.
+export const revalidate = 0;
+
 // Load both metadata and owner for the public certificate page.
 async function getTokenDetails(tokenId: string) {
   try {
+    // Skip Next.js caching for the token lookup path.
+    noStore();
+
     const client = createPublicClient({
       chain: sepolia,
       transport: http(
@@ -37,7 +47,8 @@ async function getTokenDetails(tokenId: string) {
       "ipfs://",
       "https://beige-causal-meadowlark-885.mypinata.cloud/ipfs/",
     );
-    const res = await fetch(gatewayUrl);
+    // Fetch the latest metadata so the OG image is ready for sharing.
+    const res = await fetch(gatewayUrl, { cache: "no-store" });
     if (!res.ok) return null;
     // Return all page data together so the UI can check ownership.
     return {

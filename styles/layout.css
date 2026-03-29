@@ -229,6 +229,21 @@
   grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
 }
 
+/*
+  Empty / Error / Not-connected States
+*/
+.my-certificate__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-3xl) var(--space-xl);
+  /* Fill most of the viewport so the footer stays near the bottom. */
+  min-height: calc(100vh - 265px);
+  gap: var(--space-md);
+}
+
 /* RESPONSIVE - Mobile adaptations */
 
 /* Tablet and below (768px) */
@@ -308,6 +323,13 @@
 
   h2 {
     font-size: 1.5rem; /* Smaller h2 on mobile */
+  }
+}
+
+@media (max-width: 640px) {
+  .my-certificate__empty {
+    /* Use a slightly smaller viewport fill on phones. */
+    min-height: calc(100vh - 205px);
   }
 }
 

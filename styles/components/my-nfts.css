@@ -42,7 +42,8 @@
   justify-content: center;
   text-align: center;
   padding: var(--space-3xl) var(--space-xl);
-  min-height: 400px;
+  /* Fill most of the viewport so the footer stays near the bottom. */
+  min-height: calc(100vh - 265px);
   gap: var(--space-md);
 }
 
@@ -309,6 +310,11 @@
 @media (max-width: 640px) {
   .my-nfts {
     padding: var(--space-2xl) 0;
+  }
+
+  .my-nfts__empty {
+    /* Use a slightly smaller viewport fill on phones. */
+    min-height: calc(100vh - 205px);
   }
 
   .nft-card {

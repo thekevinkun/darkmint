@@ -51,7 +51,8 @@ export async function getNFTs(address: string): Promise<{
     const url = `https://eth-sepolia.g.alchemy.com/nft/v3/${alchemyKey}/getNFTsForOwner?owner=${address}&contractAddresses[]=${CONTRACT_ADDRESS}&withMetadata=true`;
 
     const res = await fetch(url, {
-      next: { revalidate: 60 }, // Cache for 60 seconds
+      // Always fetch the latest NFTs so a fresh mint shows up right away.
+      cache: "no-store",
     });
 
     if (!res.ok) throw new Error("Failed to fetch NFTs from Alchemy");

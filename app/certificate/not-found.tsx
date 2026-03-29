@@ -2,14 +2,7 @@ import Link from "next/link";
 
 export default function CertificateNotFound() {
   return (
-    <div
-      style={{
-        maxWidth: "600px",
-        margin: "6rem auto",
-        padding: "0 1rem",
-        textAlign: "center",
-      }}
-    >
+    <div className="my-certificate__empty">
       <p style={{ fontSize: "4rem", marginBottom: "1rem" }}>🎓</p>
       <h1 style={{ color: "#a855f7", marginBottom: "0.5rem" }}>
         Certificate Not Found
